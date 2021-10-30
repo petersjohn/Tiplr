@@ -78,6 +78,7 @@
     <Compile Include="CategoryService.cs" />
     <Compile Include="InventoryItemService.cs" />
     <Compile Include="InventoryService.cs" />
+    <Compile Include="OrderService.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

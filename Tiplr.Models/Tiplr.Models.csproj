@@ -87,6 +87,9 @@
     <Compile Include="InventoryList.cs" />
     <Compile Include="InvItemDetail.cs" />
     <Compile Include="InvItemEdit.cs" />
+    <Compile Include="OrderCreate.cs" />
+    <Compile Include="OrderFinalize.cs" />
+    <Compile Include="OrderListItem.cs" />
     <Compile Include="ProductCreate.cs" />
     <Compile Include="ProductDetail.cs" />
     <Compile Include="ProductEdit.cs" />
