@@ -25,9 +25,11 @@ namespace Tiplr.Services
                 InventoryItemId = model.InventoryItemId,
                 OrderId = model.OrderId,
                 OrderAmt = model.OrderAmt,
-                AmtReceived = model.AmtReceived
+                AmtReceived = model.AmtReceived,
+                OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt
+
             };
-            using ( var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 ctx.OrderItems.Add(entity);
                 return ctx.SaveChanges() == 1;
@@ -61,6 +63,7 @@ namespace Tiplr.Services
                             join ordItem in ctx.OrderItems on invItem.InventoryItemId
                                 equals ordItem.InventoryItemId
                             where invItem.InventoryId == inventoryId
+                            orderby ordItem.Product.ProductCategory.CategoryName, ordItem.Product.ProductName
                             select new OrderItemListItem
                             {
                                 OrderItemId = ordItem.OrderItemId,
@@ -75,6 +78,76 @@ namespace Tiplr.Services
             }
         }
 
+        public OrderItemDetail GetOrderItemById(int orderItemId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.OrderItems.Single(e => e.OrderItemId == orderItemId);
+                return new OrderItemDetail
+                {
+                    OrderItemId = entity.OrderItemId,
+                    ProductId = entity.ProductId,
+                    InventoryItemId = entity.InventoryItemId,
+                    OrderId = entity.OrderId,
+                    OrderAmt = entity.OrderAmt,
+                    AmtReceived = entity.AmtReceived,
+                    OrderItemTotalPrice = entity.OrderItemTotalPrice
+                };
+            }
+        }
 
+        public bool UpdateOrderItem(OrderItemEdit model)
+        {
+            
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.OrderItems.Single(e => e.OrderItemId == model.OrderItemItemId);
+                var origCost = entity.OrderItemTotalPrice;
+                entity.OrderAmt = model.OrderAmt;
+                entity.AmtReceived = model.AmtReceived;
+                if (model.AmtReceived > 0)
+                {
+                    entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.AmtReceived;
+                }
+                else
+                {
+                    entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.OrderAmt;
+                }
+                if(AdjustOrderCost(entity.OrderItemTotalPrice, origCost, entity.OrderId))
+                {
+                    return ctx.SaveChanges() == 1;
+                }
+                return false;
+            }
+        }
+
+        public bool DeleteOrderItem(int orderItemId)
+        {
+            decimal costAdjustment;
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.OrderItems.Single(e => e.OrderItemId == orderItemId);
+                costAdjustment = entity.OrderItemTotalPrice * -1;
+                if (AdjustOrderCost(costAdjustment, 0.00m ,entity.OrderId))
+                {
+                    return ctx.SaveChanges() == 1;
+                }
+                return false;
+            }
+            
+        }
+        //helper method
+        public bool AdjustOrderCost(decimal CostAdjustment, decimal origCost, int orderId)
+        {
+            decimal entityCost;
+            using (var ctx = new ApplicationDbContext())
+            { 
+                var entity = ctx.Orders.Single(e => e.OrderId == orderId);
+                entityCost = entity.OrderCost;
+                entity.OrderCost = (entityCost - origCost) + CostAdjustment;
+                return ctx.SaveChanges() == 1;
+            }
+        }
     }
+    
 }

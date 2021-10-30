@@ -76,8 +76,6 @@ namespace Tiplr.Services
                 var entity = ctx.Orders.Single(e => e.OrderId == model.OrderId);
                 entity.OrderStatusId = model.OrderStatusId;
                 entity.UserId = model.LastUpdateUserId;
-                
-
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -90,6 +88,13 @@ namespace Tiplr.Services
                 ctx.Orders.Remove(entity);
                 return ctx.SaveChanges() == 1;
             }
+        }
+
+        private OrderItemService CreateOrderItemService()
+        {
+            var userId = _userId;
+            var service = new OrderItemService(userId);
+            return service;
         }
     }
 }

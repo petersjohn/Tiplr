@@ -91,6 +91,8 @@
     <Compile Include="OrderDetail.cs" />
     <Compile Include="OrderFinalize.cs" />
     <Compile Include="OrderItemCreate.cs" />
+    <Compile Include="OrderItemDetail.cs" />
+    <Compile Include="OrderItemEdit.cs" />
     <Compile Include="OrderListItem.cs" />
     <Compile Include="OrderItemListItem.cs" />
     <Compile Include="ProductCreate.cs" />

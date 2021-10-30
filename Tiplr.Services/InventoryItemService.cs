@@ -124,12 +124,7 @@ namespace Tiplr.Services
             }
         }
         //helper
-        private ProductService CreateProductService()
-        {
-            var userId = _userId;
-            var service = new ProductService(userId);
-            return service;
-        }
+        
         private int GetCurrentInvId()
         {
             using (var ctx = new ApplicationDbContext())
