@@ -12,7 +12,7 @@ namespace Tiplr.Models
         public int OrderId { get; set; }
         public int OrderStatusId { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
-        public Guid LastUpdateUserId { get; set; }
-        public Guid FinalizeUser { get; set; } //may need to revis
+        public string LastUpdateUserId { get; set; }
+        
     }
 }

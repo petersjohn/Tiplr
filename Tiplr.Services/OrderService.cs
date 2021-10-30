@@ -10,15 +10,13 @@ namespace Tiplr.Services
 {
     public class OrderService
     {
-        public class InventoryService
-        {
-            private readonly Guid _userId;
+        private readonly Guid _userId;
 
-            public InventoryService(Guid userId)
-            {
-                _userId = userId;
-            }
+        public OrderService(Guid userId)
+        {
+            _userId = userId;
         }
+
 
         public bool CreateOrder(OrderCreate model)
         {
@@ -28,7 +26,7 @@ namespace Tiplr.Services
                 OrderStatusId = model.OrderStatusId,
                 OrderCost = model.OrderCost,
                 OrderDate = DateTimeOffset.Now,
-                LastUpdateUserId = model.LastUpdateUserId
+                UserId = model.LastUpdateUserId
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -37,6 +35,21 @@ namespace Tiplr.Services
             }
         }
 
+        public OrderDetail GetOrderDetail(int orderId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var order = ctx.Orders.Single(o => o.OrderId == orderId);
+                return new OrderDetail
+                {
+                    OrderId = order.OrderId,
+                    InventoryId = order.InventoryId,
+                    OrderCost = order.OrderCost,
+                    UserId = order.UserId
+                };
+
+            }
+        }
         public IEnumerable<OrderListItem> GetOrders()
         {
             using (var ctx = new ApplicationDbContext())
@@ -62,8 +75,8 @@ namespace Tiplr.Services
             {
                 var entity = ctx.Orders.Single(e => e.OrderId == model.OrderId);
                 entity.OrderStatusId = model.OrderStatusId;
-                entity.LastUpdateUserId = model.LastUpdateUserId;
-                entity.FinalizeUser = model.FinalizeUser;
+                entity.UserId = model.LastUpdateUserId;
+                
 
                 return ctx.SaveChanges() == 1;
             }

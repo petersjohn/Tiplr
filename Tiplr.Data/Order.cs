@@ -22,8 +22,12 @@ namespace Tiplr.Data
         public int OrderStatusId { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public DateTimeOffset OrderDate { get; set; }
-        public Guid LastUpdateUserId { get; set; }
-        public Guid FinalizeUser { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public string UserId { get; set; }
+        public virtual ApplicationUser User { get; set; }
+
+
+
 
     }
 }

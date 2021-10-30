@@ -7,14 +7,14 @@ using Tiplr.Data;
 
 namespace Tiplr.Models
 {
-    public class OrderCreate
+    public class OrderDetail
     {
+        public int OrderId { get; set; }
         public int InventoryId { get; set; }
         public virtual Inventory Inventory { get; set; }
         public decimal OrderCost { get; set; }
-        public int OrderStatusId { get; set; }
-        public virtual OrderStatus OrderStatus { get; set; }
-        public DateTimeOffset OrderDate { get; set; }
-        public string LastUpdateUserId { get; set; }
+        public string UserId { get; set; }
+        public virtual ApplicationUser ApplicationUser{ get; set; }
+
     }
 }

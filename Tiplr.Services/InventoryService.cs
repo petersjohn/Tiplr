@@ -23,10 +23,10 @@ namespace Tiplr.Services
             var entity = new Inventory()
             {
                 InventoryDate = DateTimeOffset.Now,//model.InventoryDate
-                CreatedByUser = _userId,
+                CreatedByUser = _userId.ToString(),
                 Finalized = false,
                 LastModifiedDtTm = DateTimeOffset.Now,
-                UpdtUser = _userId
+                LastModUser = _userId.ToString()
             };
            using (var ctx = new ApplicationDbContext())
             {
@@ -35,6 +35,22 @@ namespace Tiplr.Services
             }
         }
 
+        public InventoryDetail GetInventoryById(int invId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.Inventories.Single(e => e.InventoryId == invId);
+                return new InventoryDetail
+                {
+                    InventoryId = entity.InventoryId,
+                    InventoryDate = entity.InventoryDate,
+                    Finalized = entity.Finalized,
+                    LastModUser = entity.LastModUser,
+                    CreatedByUser = entity.CreatedByUser
+
+                };
+            }
+        }
         public IEnumerable<InventoryList> GetInventories()
         {
             using( var ctx = new ApplicationDbContext())
@@ -59,7 +75,7 @@ namespace Tiplr.Services
                 var entity = ctx.Inventories.Single(e => e.InventoryId == model.InventoryId);
                 entity.Finalized = model.Finalized;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
-                entity.UpdtUser = _userId;
+                entity.LastModUser = _userId.ToString();
 
                 return ctx.SaveChanges() == 1;
              }

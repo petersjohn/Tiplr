@@ -88,8 +88,11 @@
     <Compile Include="InvItemDetail.cs" />
     <Compile Include="InvItemEdit.cs" />
     <Compile Include="OrderCreate.cs" />
+    <Compile Include="OrderDetail.cs" />
     <Compile Include="OrderFinalize.cs" />
+    <Compile Include="OrderItemCreate.cs" />
     <Compile Include="OrderListItem.cs" />
+    <Compile Include="OrderItemListItem.cs" />
     <Compile Include="ProductCreate.cs" />
     <Compile Include="ProductDetail.cs" />
     <Compile Include="ProductEdit.cs" />
