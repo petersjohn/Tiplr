@@ -168,8 +168,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -237,6 +240,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Inventory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -253,8 +257,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tiplr.Data\Tiplr.Data.csproj">
-      <Project>{A44B02E7-BE81-461A-AB21-865573F27BFA}</Project>
+      <Project>{a44b02e7-be81-461a-ab21-865573f27bfa}</Project>
       <Name>Tiplr.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tiplr.Models\Tiplr.Models.csproj">
+      <Project>{ea3ea621-2b2a-4909-be7e-b36587affa25}</Project>
+      <Name>Tiplr.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tiplr.Services\Tiplr.Services.csproj">
+      <Project>{cba53faa-0868-4158-b39a-559a5107d4e0}</Project>
+      <Name>Tiplr.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
