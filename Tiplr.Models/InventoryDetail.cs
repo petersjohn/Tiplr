@@ -16,13 +16,16 @@ namespace Tiplr.Models
         public DateTimeOffset InventoryDate {get; set;}
         [Display(Name = "Inventory Finalized?")]
         public bool Finalized { get; set; }
+        public decimal TotalOnHandValue { get; set; }
         public string LastModUser { get; set; }
         public virtual ApplicationUser LastModifiedUser { get; set; }
         public string CreatedByUser { get; set; }
         public virtual ApplicationUser CreateUser { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
+
         
-        
+
+
 
     }
 }

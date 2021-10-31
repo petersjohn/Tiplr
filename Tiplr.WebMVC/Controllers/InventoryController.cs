@@ -23,7 +23,10 @@ namespace Tiplr.WebMVC.Controllers
         //GET Create
         public ActionResult Create()
         {
-            return View();
+            var svc = CreateInvService();
+            var viewModel = svc.GetInvCreateView();
+            return View(viewModel);
+
         }
 
         [HttpPost]
@@ -32,27 +35,99 @@ namespace Tiplr.WebMVC.Controllers
         {
             if (!ModelState.IsValid) return View(model);
             var invSvc = CreateInvService();
+            var productSvc = CreateProductService();
             var invItemSvc = CreateInvItemService();
-            var prdSvc = CreateProductService();
             if (invSvc.CreateInventory(model))
             {
-                var prdList = prdSvc.GetActiveProducts();
-                if (invItemSvc.CreateCountList(prdList))
+                TempData["SaveResult"] = "Inventory Started, building new count sheet..";
+                var productsToInventory = productSvc.GetActiveProducts();
+                if (invItemSvc.CreateCountList(productsToInventory))
                 {
-                    TempData["SaveResult"] = "New Inventory Created";
+                    TempData["SaveResult"] = "Count sheet is complete, I hope you like it!";
                     return RedirectToAction("Index");
-                };
-                TempData["SaveResult"] = "New Inventory Started, but not all Inventory Items were created. DO SOMETHING JOHN";
+                }
+            }
+            ModelState.AddModelError("", "Hoo boy, something crashed and burned, log out and try again.");
+            return View(model);
+        }
+
+
+        public ActionResult Details(int id)
+        {
+            var svc = CreateInvService();
+            var model = svc.GetInventoryById(id);
+
+            return View(model);
+        }
+
+
+        public ActionResult Finalize(int id)
+        {
+            var invSvc = CreateInvService();
+            var invDetail = invSvc.GetInventoryById(id);
+            var invValue = GetOnHandValue(id);
+            var model = new InventoryFinalize()
+            {
+                InventoryId = invDetail.InventoryId,
+                TotalOnHandValue = invValue,
+                Finalized = true,
+                LastModifiedBy = User.Identity.GetUserId()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Finalize(InventoryFinalize model, int id)
+        {
+            if (!ModelState.IsValid) return View(model);
+            if (model.InventoryId != id)
+            {
+                ModelState.AddModelError("", "ID mismatch");
+                return View(model);
+            }
+            var invSvc = CreateInvService();
+            if (invSvc.UpdateInventory(model))
+            {
+                TempData["SaveResult"] = "Inventory has been finalized.";
                 return RedirectToAction("Index");
             }
-            ModelState.AddModelError("", "Inventory could not be started");
+            ModelState.AddModelError("", "Inventory Could not be finalized");
             return View(model);
-
-
         }
-        //helper methods
 
+        public ActionResult Delete(int id)
+        {
+            var invSvc = CreateInvService();
+            var model = invSvc.GetInventoryById(id);
 
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteInventory(int id)
+        {
+            var invSvc = CreateInvService();
+            var itemSvc = CreateInvItemService();
+            int itemCnt = itemSvc.GetItemInvRowCount(id);
+            if (RemoveInvForDeletedInventory(id) == itemCnt)
+            {
+                if (invSvc.DeleteInventory(id))
+                {
+                    TempData["SaveResult"] = "Inventory and all associated counts successfully deleted.";
+                    return RedirectToAction("Index");
+                }
+                ModelState.AddModelError("", "The selected inventory could not be deleted.");
+                return View();
+            }
+             ModelState.AddModelError("", "Not all the associated inventory items could be deleted. Delete was unsuccessful.");
+            return RedirectToAction("Index");
+        }
+
+        //***********************************Helper Methods*****************************************//
         private InventoryService CreateInvService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -74,6 +149,36 @@ namespace Tiplr.WebMVC.Controllers
             return service;
         }
 
+        private decimal GetOnHandValue(int id)
+        {
+            var itemSvc = CreateInvItemService();
+            var invItems = itemSvc.GetOnHandInventory(id);
+            decimal retval = 0m;
+            foreach (var invItem in invItems)
+            {
+                //each Count, multiplied by the product unit price sub totalled to the retval
+                decimal onHandVal = invItem.OnHandCount * invItem.Product.UnitPrice;
+                retval = retval + onHandVal;
+            }
+            return retval;
+        }
 
+        private int RemoveInvForDeletedInventory(int id)
+        {
+            var itemSvc = CreateInvItemService();
+            var invItemList = itemSvc.GetOnHandInventory(id);
+            int deleteCnt = 0;
+            foreach(var inv in invItemList)
+            {
+                if (itemSvc.DeleteInvItem(inv.InventoryItemId))
+                {
+                    deleteCnt += 1;
+                }
+            }
+            return deleteCnt;
+
+        }
     }
 }
+
+

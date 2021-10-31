@@ -47,7 +47,7 @@ namespace Tiplr.Services
                 CreatedDtTm = DateTime.Now,
                 LastModifiedDtTm = DateTime.Now,
                 InactiveDtTm = null,
-                Id = _userId.ToString()
+                LastUpdateById = _userId.ToString()
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -96,7 +96,7 @@ namespace Tiplr.Services
                     CasePackPrice = entity.CasePackPrice,
                     Par = entity.Par,
                     LastModifiedDtTm = entity.LastModifiedDtTm,
-                    UserId = entity.ApplicationUser.Id,
+                    UserId = entity.LastUpdateById,
                     Active = entity.Active                   
                 };
             }

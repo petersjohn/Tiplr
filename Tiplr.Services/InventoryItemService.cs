@@ -125,6 +125,15 @@ namespace Tiplr.Services
         }
         //helper
         
+        public int GetItemInvRowCount(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var count = ctx.InventoryItems.Count(e => e.InventoryId == id);
+                return count;
+            }
+        }
+
         private int GetCurrentInvId()
         {
             using (var ctx = new ApplicationDbContext())

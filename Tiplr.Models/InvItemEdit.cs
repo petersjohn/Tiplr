@@ -13,7 +13,7 @@ namespace Tiplr.Models
         public int InventoryItemId { get; set; }
         
         [Display(Name = "Count")]
-        public double OnHandCount { get; set; }
+        public decimal OnHandCount { get; set; }
         public DateTimeOffset LastModifiedDateTime { get; set; }
         public string Id { get; set; } //user id in ApplicationUser
         public virtual ApplicationUser ApplicationUser { get; set; }

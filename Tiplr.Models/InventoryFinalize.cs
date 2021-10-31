@@ -13,7 +13,7 @@ namespace Tiplr.Models
         [Display(Name = "Inventory Finalized?")]
         public bool Finalized { get; set; }
         public decimal TotalOnHandValue { get; set; }
-        public Guid UpdtUser { get; set; }
+        public string LastModifiedBy { get; set; }
 
     }
 }

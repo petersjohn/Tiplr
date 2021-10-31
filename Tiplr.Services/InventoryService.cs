@@ -22,7 +22,7 @@ namespace Tiplr.Services
             }
             var entity = new Inventory()
             {
-                InventoryDate = DateTimeOffset.Now,//model.InventoryDate
+                InventoryDate = model.InventoryDate,
                 CreatedByUser = _userId.ToString(),
                 Finalized = false,
                 LastModifiedDtTm = DateTimeOffset.Now,
@@ -33,6 +33,13 @@ namespace Tiplr.Services
                 ctx.Inventories.Add(entity);
                 return ctx.SaveChanges() == 1;
             }
+        }
+
+        public InventoryCreate GetInvCreateView()
+        {
+            var ctx = new ApplicationDbContext();
+            var viewModel = new InventoryCreate();
+            return viewModel;
         }
 
         public InventoryDetail GetInventoryById(int invId)
@@ -75,7 +82,8 @@ namespace Tiplr.Services
                 var entity = ctx.Inventories.Single(e => e.InventoryId == model.InventoryId);
                 entity.Finalized = model.Finalized;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
-                entity.LastModUser = _userId.ToString();
+                entity.LastModUser = model.LastModifiedBy;
+                entity.TotalOnHandValue = model.TotalOnHandValue;
 
                 return ctx.SaveChanges() == 1;
             }
