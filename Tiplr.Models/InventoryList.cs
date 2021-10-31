@@ -12,6 +12,7 @@ namespace Tiplr.Models
         public int InventoryId { get; set; }
         [Display(Name = "Inventory Date")]
         public DateTimeOffset InventoryDate { get; set; }
+        public decimal TotalOnHandValue { get; set; }
         public bool Finalized { get; set; }
 
 

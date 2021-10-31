@@ -25,7 +25,7 @@ namespace Tiplr.Services
                 ProductId = model.ProductId,
                 OnHandCount = model.OnHandCount,
                 LastModifiedDtTm = DateTimeOffset.Now,
-                Id = model.Id
+                LastModifiedById = model.Id
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -96,7 +96,7 @@ namespace Tiplr.Services
                     InventoryId = entity.InventoryId,
                     ProductId = entity.ProductId,
                     OnHandCount = entity.OnHandCount,
-                    UpdtUser = entity.Id //user string guid
+                    UpdtUser = entity.LastModifiedById //user string guid
                 };
             }
         }
@@ -108,7 +108,7 @@ namespace Tiplr.Services
                 var entity = ctx.InventoryItems.Single(e => e.InventoryItemId == model.InventoryItemId);
                 entity.OnHandCount = model.OnHandCount;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
-                entity.Id = model.Id;
+                entity.LastModifiedById = model.Id;
 
                 return ctx.SaveChanges() == 1;
             }
@@ -133,5 +133,6 @@ namespace Tiplr.Services
                 return entity.InventoryId;
             }
         }
+       
     }
 }

@@ -14,13 +14,15 @@ namespace Tiplr.Data
         public int InventoryId { get; set; }
         public DateTimeOffset InventoryDate { get; set; }
         public bool Finalized { get; set; }
-        [ForeignKey("ApplicationUser")]
         public string CreatedByUser { get; set; }
-        public virtual ApplicationUser CreateUser { get; set; }
-        [ForeignKey("ApplicationUser")]
         public string LastModUser { get; set; }
-        public virtual ApplicationUser LastModifiedUser { get; set; }
+        public decimal TotalOnHandValue { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
-        //public Guid UpdtUser { get; set; }
+
+        [ForeignKey("CreatedByUser")]
+        public virtual ApplicationUser CreatedBy { get; set; }
+        [ForeignKey("LastModUser")]
+        public virtual ApplicationUser LastModBy { get; set; }
+      
     }
 }

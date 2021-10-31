@@ -23,10 +23,13 @@ namespace Tiplr.Data
         public virtual Product Product { get; set; }
         public double OnHandCount { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
-        [ForeignKey(nameof(ApplicationUser))]
-        public string Id { get; set; }
 
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string LastModifiedById  { get; set; }
+
+        [ForeignKey("LastModifiedById")]
+        public virtual ApplicationUser LastModBy { get; set; }
+
+
 
     }
 }

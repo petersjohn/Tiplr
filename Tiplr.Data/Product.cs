@@ -46,10 +46,9 @@ namespace Tiplr.Data
         public DateTimeOffset CreatedDtTm { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
         public DateTimeOffset? InactiveDtTm { get; set; }
-        [ForeignKey(nameof(ApplicationUser))]
-        [Display(Name = "UserId")]
-        public string Id { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string LastUpdateById { get; set; }
+        [ForeignKey("LastUpdateById")]
+        public virtual ApplicationUser LastModBy { get; set; }
 
     }
 }

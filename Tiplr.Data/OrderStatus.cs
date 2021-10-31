@@ -11,7 +11,7 @@ namespace Tiplr.Data
     {
         [Key]
         public int OrderStatusId { get; set; }
-        public string OrderStatusDisplay { get; set; }
+        public string OrderStatusMeaning { get; set; }
         public bool Active { get; set; }
     }
 }

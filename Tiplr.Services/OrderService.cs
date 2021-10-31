@@ -26,7 +26,7 @@ namespace Tiplr.Services
                 OrderStatusId = model.OrderStatusId,
                 OrderCost = model.OrderCost,
                 OrderDate = DateTimeOffset.Now,
-                UserId = model.LastUpdateUserId
+                LastModifiedById = model.LastUpdateUserId
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -45,7 +45,7 @@ namespace Tiplr.Services
                     OrderId = order.OrderId,
                     InventoryId = order.InventoryId,
                     OrderCost = order.OrderCost,
-                    UserId = order.UserId
+                    UserId = order.LastModifiedById
                 };
 
             }
@@ -69,13 +69,13 @@ namespace Tiplr.Services
         }
 
         //Update
-        public bool FinalizeOrder(OrderFinalize model)
+        public bool UpdateOrderStatus(OrderFinalize model)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Orders.Single(e => e.OrderId == model.OrderId);
                 entity.OrderStatusId = model.OrderStatusId;
-                entity.UserId = model.LastUpdateUserId;
+                entity.LastModifiedById = model.LastUpdateUserId;
                 return ctx.SaveChanges() == 1;
             }
         }
@@ -89,12 +89,5 @@ namespace Tiplr.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-
-        private OrderItemService CreateOrderItemService()
-        {
-            var userId = _userId;
-            var service = new OrderItemService(userId);
-            return service;
-        }
-    }
+     }
 }

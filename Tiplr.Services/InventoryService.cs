@@ -16,7 +16,7 @@ namespace Tiplr.Services
         }
         public bool CreateInventory(InventoryCreate model)
         {
-            if(FinalizedOpenCheck() > 0) //do not allow a new inventory to be created if there are open inventories
+            if (FinalizedOpenCheck() > 0) //do not allow a new inventory to be created if there are open inventories
             {
                 return false;
             }
@@ -28,7 +28,7 @@ namespace Tiplr.Services
                 LastModifiedDtTm = DateTimeOffset.Now,
                 LastModUser = _userId.ToString()
             };
-           using (var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 ctx.Inventories.Add(entity);
                 return ctx.SaveChanges() == 1;
@@ -53,7 +53,7 @@ namespace Tiplr.Services
         }
         public IEnumerable<InventoryList> GetInventories()
         {
-            using( var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 var query = ctx.Inventories.Where(
                     e => e.InventoryId > 0).OrderByDescending(e => e.InventoryDate)
@@ -62,7 +62,7 @@ namespace Tiplr.Services
                             {
                                 InventoryId = e.InventoryId,
                                 Finalized = e.Finalized,
-                                InventoryDate = e.InventoryDate
+                                TotalOnHandValue = e.TotalOnHandValue
                             });
                 return query.ToArray();
             }
@@ -78,8 +78,8 @@ namespace Tiplr.Services
                 entity.LastModUser = _userId.ToString();
 
                 return ctx.SaveChanges() == 1;
-             }
-           
+            }
+
         }
 
         public bool DeleteInventory(int id)
@@ -87,9 +87,12 @@ namespace Tiplr.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Inventories.Single(e => e.InventoryId == id);
-                ctx.Inventories.Remove(entity);
-
-                return ctx.SaveChanges() == 1;
+                if (!entity.Finalized == true)
+                {
+                    return false;
+                }
+                else
+                    return ctx.SaveChanges() == 1;
             }
         }
 
@@ -102,9 +105,7 @@ namespace Tiplr.Services
                 return count;
             }
         }
-        
-
-
-
     }
 }
+
+
