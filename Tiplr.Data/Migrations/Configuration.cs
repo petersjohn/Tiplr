@@ -15,11 +15,6 @@
 
         protected override void Seed(Tiplr.Data.ApplicationDbContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
-            //  to avoid creating duplicate seed data.
-
             List<OrderStatus> statusList = new List<OrderStatus>();
 
             statusList.Add(new OrderStatus()
