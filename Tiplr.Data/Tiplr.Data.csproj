@@ -85,6 +85,10 @@
     <Compile Include="Migrations\202110310031537_init.designer.cs">
       <DependentUpon>202110310031537_init.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110310344483_updtDataTypes.cs" />
+    <Compile Include="Migrations\202110310344483_updtDataTypes.designer.cs">
+      <DependentUpon>202110310344483_updtDataTypes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Order.cs" />
     <Compile Include="OrderItem.cs" />
@@ -100,6 +104,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202110310031537_init.resx">
       <DependentUpon>202110310031537_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110310344483_updtDataTypes.resx">
+      <DependentUpon>202110310344483_updtDataTypes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

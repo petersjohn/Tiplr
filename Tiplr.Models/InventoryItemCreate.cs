@@ -11,7 +11,7 @@ namespace Tiplr.Models
     {
         public int InventoryId { get; set; }
         public int  ProductId { get; set; }
-        public double OnHandCount { get; set; }
+        public decimal OnHandCount { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
         public string Id { get; set; } //userId
 

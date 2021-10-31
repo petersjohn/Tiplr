@@ -16,7 +16,7 @@ namespace Tiplr.Models
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
         [Display(Name = "Count")]
-        public double OnHandCount { get; set; }
+        public decimal OnHandCount { get; set; }
         public string UpdtUser { get; set; }
 
     }
