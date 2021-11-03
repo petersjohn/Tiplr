@@ -22,10 +22,10 @@ namespace Tiplr.WebMVC.Controllers
 
         //Get Create
 
-        public  ActionResult Create()
+        public ActionResult Create()
         {
             var orderSvc = CreateOrderService();
-            var InvItemSvc = CreateInvItemSvc();
+            var InvItemSvc = CreateInvItemService();
             int currentInv = InvItemSvc.GetCurrentInvId();
             var viewModel = orderSvc.CreateOrderView();
             viewModel.InventoryId = currentInv;
@@ -41,8 +41,8 @@ namespace Tiplr.WebMVC.Controllers
             var svc = CreateOrderService();
             if (svc.CreateOrder(model))
             {
-            TempData["SaveResult"] = "Your Order was created!";
-                
+                TempData["SaveResult"] = "Your Order was created!";
+
                 return RedirectToAction("Index");//reset this to return the user to the order item index.
             };
             ModelState.AddModelError("", "Order could not be created.");
@@ -92,18 +92,72 @@ namespace Tiplr.WebMVC.Controllers
             return View(model);
 
         }
-            //helper methods
+        public ActionResult Delete(int? id)
+        {
+            var svc = CreateOrderService();
+            OrderDetail order = svc.GetOrderById((int)id);
+            if (order == null)
+                return View(HttpNotFound());
+            return View(order);
+
+        }
+
+        [ActionName("Delete")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public ActionResult Delete(int id)
+        {
+            
+            var ordSvc = CreateOrderService();
+            int itemsDeleted = DeleteRelatedOrderItems(id);
+
+            if (ordSvc.DeleteOrder(id))
+            {
+                TempData["SaveResult"] = $"Order ID {id} was deleted along with {itemsDeleted} ordered products related to this order";
+                return RedirectToAction("Index");
+            }
+            else //return the user to the orde they are trying to delete.
+            {
+                var model = ordSvc.GetOrderById(id);
+                ModelState.AddModelError("", $"Order ID {id} could not be deleted.");
+                return View(model);
+            }
+        }
 
 
+        //helper methods
 
-            private OrderService CreateOrderService()
+
+        private int DeleteRelatedOrderItems(int orderId)
+        {
+            var ordItemSvc = CreateOrderItemService();
+            var orderItems = ordItemSvc.GetOrderListItemsByOrderId(orderId);
+            int OrderItemDeleteCount = 0;
+            foreach(var item in orderItems)
+            {
+                if (ordItemSvc.DeleteOrderItem(item.OrderItemId))
+                {
+                    OrderItemDeleteCount += 1;
+                };
+            };
+            return OrderItemDeleteCount;
+        }
+        private OrderService CreateOrderService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new OrderService(userId);
             return service;
         }
 
-        private InventoryItemService CreateInvItemSvc()
+        private OrderItemService CreateOrderItemService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new OrderItemService(userId);
+            return service;
+        }
+
+        private InventoryItemService CreateInvItemService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new InventoryItemService(userId);
