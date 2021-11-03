@@ -17,7 +17,11 @@ namespace Tiplr.Services
             _userId = userId;
         }
 
-
+        public OrderCreate CreateOrderView()
+        {
+            var model = new OrderCreate();
+            return model;
+        }
         public bool CreateOrder(OrderCreate model)
         {
             var entity = new Order()
@@ -35,7 +39,9 @@ namespace Tiplr.Services
             }
         }
 
-        public OrderDetail GetOrderDetail(int orderId)
+
+
+        public OrderDetail GetOrderById(int orderId)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -69,7 +75,7 @@ namespace Tiplr.Services
         }
 
         //Update
-        public bool UpdateOrderStatus(OrderFinalize model)
+        public bool UpdateOrderStatus(OrderEdit model)
         {
             using (var ctx = new ApplicationDbContext())
             {

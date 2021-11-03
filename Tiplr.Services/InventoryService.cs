@@ -37,7 +37,6 @@ namespace Tiplr.Services
 
         public InventoryCreate GetInvCreateView()
         {
-            var ctx = new ApplicationDbContext();
             var viewModel = new InventoryCreate();
             return viewModel;
         }

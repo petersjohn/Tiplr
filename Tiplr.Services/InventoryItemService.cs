@@ -101,6 +101,27 @@ namespace Tiplr.Services
             }
         }
 
+        public List<InvItemDetail> GetSubParInvItems(int inventoryId)
+        {
+            var invItems = GetOnHandInventory(inventoryId);
+            List<InvItemDetail> orderInv = new List<InvItemDetail>();
+            foreach(var item in invItems)
+            {
+                if(item.Product.Par < item.OnHandCount)
+                {
+                    orderInv.Add(new InvItemDetail
+                    {
+                        InventoryId = item.InventoryId,
+                        OnHandCount = item.OnHandCount,
+                        ProductId = item.ProductId,
+                        UpdtUser = _userId.ToString(),
+                        InventoryItemId = item.InventoryItemId
+                    });
+                }
+            }
+            return orderInv;
+        }
+
         public bool UpdateInvItem(InvItemEdit model)
         {
             using (var ctx = new ApplicationDbContext())
@@ -134,7 +155,7 @@ namespace Tiplr.Services
             }
         }
 
-        private int GetCurrentInvId()
+        public int GetCurrentInvId()
         {
             using (var ctx = new ApplicationDbContext())
             {

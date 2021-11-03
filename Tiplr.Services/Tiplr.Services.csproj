@@ -83,6 +83,7 @@
     <Compile Include="InventoryService.cs" />
     <Compile Include="OrderItemService.cs" />
     <Compile Include="OrderService.cs" />
+    <Compile Include="OrderStatusService.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
