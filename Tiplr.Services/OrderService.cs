@@ -24,22 +24,24 @@ namespace Tiplr.Services
         }
         public bool CreateOrder(OrderCreate model)
         {
-            var entity = new Order()
+            if (ValidateNoOrderExists(model.InventoryId) && ValidateInvExists(model.InventoryId))//don't create an order if one already exists OR if an inventory has not been created
             {
-                InventoryId = model.InventoryId,
-                OrderStatusId = model.OrderStatusId,
-                OrderCost = model.OrderCost,
-                OrderDate = DateTimeOffset.Now,
-                LastModifiedById = model.LastUpdateUserId
-            };
-            using (var ctx = new ApplicationDbContext())
-            {
-                ctx.Orders.Add(entity);
-                return ctx.SaveChanges() == 1;
+                var entity = new Order()
+                {
+                    InventoryId = model.InventoryId,
+                    OrderStatusId = model.OrderStatusId,
+                    OrderCost = model.OrderCost,
+                    OrderDate = DateTimeOffset.Now,
+                    LastModifiedById = model.LastUpdateUserId
+                };
+                using (var ctx = new ApplicationDbContext())
+                {
+                    ctx.Orders.Add(entity);
+                    return ctx.SaveChanges() == 1;
+                }
             }
+            return false;
         }
-
-
 
         public OrderDetail GetOrderById(int orderId)
         {
@@ -95,5 +97,28 @@ namespace Tiplr.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-     }
+
+        //helper method
+        private bool ValidateNoOrderExists(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var orderCount = ctx.Orders.Count(e => e.InventoryId == id);
+                if (orderCount > 0)
+                    return false;
+                return true;
+            }
+        }
+
+        public bool ValidateInvExists(int id)
+        {
+            var ctx = new ApplicationDbContext();
+            if (ctx.Inventories.Find(id) == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+    }
 }

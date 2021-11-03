@@ -45,7 +45,7 @@ namespace Tiplr.WebMVC.Controllers
 
                 return RedirectToAction("Index");//reset this to return the user to the order item index.
             };
-            ModelState.AddModelError("", "Order could not be created.");
+            ModelState.AddModelError("", "Order could not be created. Either no inventory has been started or there is an existing order for this inventory period.");
             return View(model);
 
         }
