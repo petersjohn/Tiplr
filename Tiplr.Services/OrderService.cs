@@ -120,5 +120,18 @@ namespace Tiplr.Services
             return true;
         }
 
+        public int getCurrentOrderId()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query = (from i in ctx.Inventories
+                             join o in ctx.Orders on i.InventoryId equals o.InventoryId
+                             where i.Finalized == false
+                             select new { o.OrderId }).Single();
+                int orderId = query.OrderId;
+                return orderId;
+            }
+        }
+
     }
 }

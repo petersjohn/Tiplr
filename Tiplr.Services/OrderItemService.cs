@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Azure.Cosmos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Tiplr.Data;
 using Tiplr.Models;
 
@@ -16,13 +18,24 @@ namespace Tiplr.Services
         {
             _userId = userId;
         }
+        public OrderItemCreate GetOrderItemCreateView(int invItemId)//this will only get called from inv item page
+        {
+            var ctx = new ApplicationDbContext();
+            var orderSvc = new OrderService(_userId);
+            var itemEntity = ctx.InventoryItems.Single(ie => ie.InventoryItemId == invItemId);
+            var returnModel = new OrderItemCreate();
+            returnModel.InventoryItemId = invItemId;
+            returnModel.OrderId = orderSvc.getCurrentOrderId();
+            returnModel.ProductId = itemEntity.ProductId;
 
+            return returnModel;
+        }
         public bool CreateOrderItem(OrderItemCreate model)
         {
             var entity = new OrderItem()
             {
                 ProductId = model.ProductId,
-                InventoryItemId = model.InventoryItemId,
+                //InventoryItemId = model.InventoryItemId,
                 OrderId = model.OrderId,
                 OrderAmt = model.OrderAmt,
                 AmtReceived = model.AmtReceived,
@@ -31,7 +44,7 @@ namespace Tiplr.Services
             };
             using (var ctx = new ApplicationDbContext())
             {
-           
+
                 ctx.OrderItems.Add(entity);
                 return ctx.SaveChanges() == 1;
             }
@@ -99,7 +112,7 @@ namespace Tiplr.Services
 
         public bool UpdateOrderItem(OrderItemEdit model)
         {
-            
+
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.OrderItems.Single(e => e.OrderItemId == model.OrderItemItemId);
@@ -114,7 +127,7 @@ namespace Tiplr.Services
                 {
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.OrderAmt;
                 }
-                if(AdjustOrderCost(entity.OrderItemTotalPrice, origCost, entity.OrderId))
+                if (AdjustOrderCost(entity.OrderItemTotalPrice, origCost, entity.OrderId))
                 {
                     return ctx.SaveChanges() == 1;
                 }
@@ -129,26 +142,29 @@ namespace Tiplr.Services
             {
                 var entity = ctx.OrderItems.Single(e => e.OrderItemId == orderItemId);
                 costAdjustment = entity.OrderItemTotalPrice * -1;
-                if (AdjustOrderCost(costAdjustment, 0.00m ,entity.OrderId))
+                if (AdjustOrderCost(costAdjustment, 0.00m, entity.OrderId)) //only remove if the cost can be adjusted
                 {
+                    ctx.OrderItems.Remove(entity);
                     return ctx.SaveChanges() == 1;
                 }
                 return false;
             }
-            
+
         }
         //helper method
         public bool AdjustOrderCost(decimal CostAdjustment, decimal origCost, int orderId)
         {
             decimal entityCost;
             using (var ctx = new ApplicationDbContext())
-            { 
+            {
                 var entity = ctx.Orders.Single(e => e.OrderId == orderId);
                 entityCost = entity.OrderCost;
                 entity.OrderCost = (entityCost - origCost) + CostAdjustment;
                 return ctx.SaveChanges() == 1;
             }
         }
-    }
-    
+
+
+
+    }  
 }

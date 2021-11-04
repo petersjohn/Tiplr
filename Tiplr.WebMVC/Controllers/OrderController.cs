@@ -50,6 +50,14 @@ namespace Tiplr.WebMVC.Controllers
 
         }
 
+        public ActionResult Details(int id)
+        {
+            var svc = CreateOrderService();
+            var model = svc.GetOrderById(id);
+            return View(model);
+        }
+
+
         //Edit GetThe Order
         public ActionResult Edit(int id)
         {
@@ -114,10 +122,10 @@ namespace Tiplr.WebMVC.Controllers
 
             if (ordSvc.DeleteOrder(id))
             {
-                TempData["SaveResult"] = $"Order ID {id} was deleted along with {itemsDeleted} ordered products related to this order";
+                TempData["SaveResult"] = $"Order ID {id} was deleted along with {itemsDeleted}  products related to this order";
                 return RedirectToAction("Index");
             }
-            else //return the user to the orde they are trying to delete.
+            else //return the user to the order they are trying to delete.
             {
                 var model = ordSvc.GetOrderById(id);
                 ModelState.AddModelError("", $"Order ID {id} could not be deleted.");
