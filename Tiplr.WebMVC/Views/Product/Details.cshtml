@@ -1,0 +1,122 @@
+﻿@model Tiplr.Models.ProductDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProductDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoryId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CategoryId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CountBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CountBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CasePackPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CasePackPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitsPerPack)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitsPerPack)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Par)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Par)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDtTm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDtTm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

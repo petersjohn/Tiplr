@@ -19,6 +19,7 @@ namespace Tiplr.Models
         [MaxLength(150, ErrorMessage = "Maximum of 150 characters allowed")]
         [Display(Name = "Description")]
         public string ProductDescription { get; set; }
+        [Display(Name = "Product Category")]
         public int? CategoryId { get; set; }
         public virtual ProductCategory ProductCategory { get; set; }
 

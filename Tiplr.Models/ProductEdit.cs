@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Tiplr.Data;
 
 namespace Tiplr.Models
@@ -19,7 +20,8 @@ namespace Tiplr.Models
         [Display(Name = "Description")]
         public string ProductDescription { get; set; }
         public int? CategoryId { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory Category { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
         [Required]
         public string CountBy { get; set; }
         [Required]

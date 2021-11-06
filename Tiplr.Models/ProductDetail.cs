@@ -20,7 +20,7 @@ namespace Tiplr.Models
         [Display(Name = "Product Category")]
         public int? CategoryId { get; set; }
         [Display(Name = "Count Units")]
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory Category { get; set; }
         public string CountBy { get; set; }
         [Display(Name = "Ordered By Units")]
         public string OrderBy { get; set; }

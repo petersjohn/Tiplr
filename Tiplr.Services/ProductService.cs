@@ -22,7 +22,7 @@ namespace Tiplr.Services
         {
             var ctx = new ApplicationDbContext();
             var viewModel = new ProductCreate();
-            viewModel.ProductCategories = ctx.ProductCategories.Select(category => new SelectListItem
+            viewModel.ProductCategories = ctx.ProductCategories.OrderBy(m=> m.CategoryName).Select(category => new SelectListItem
             {
                 Text = category.CategoryName,
                 Value = category.CategoryId.ToString()
@@ -72,7 +72,9 @@ namespace Tiplr.Services
                                    UnitsPerPack = e.UnitsPerPack,
                                    UnitPrice = e.UnitPrice,
                                    Par = e.Par,
-                                   Active = e.Active
+                                   Active = e.Active,
+                                   Category = e.ProductCategory
+                                 
                                });
                 return query.ToArray();
             }
@@ -89,6 +91,7 @@ namespace Tiplr.Services
                     ProductName = entity.ProductName,
                     ProductDescription = entity.ProductDescription,
                     CategoryId = entity.CategoryId,
+                    Category = entity.ProductCategory,
                     CountBy = entity.CountBy,
                     OrderBy = entity.OrderBy,
                     UnitPrice = entity.UnitPrice,

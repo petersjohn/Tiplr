@@ -56,11 +56,18 @@ namespace Tiplr.WebMVC.Controllers
         public ActionResult Edit(int id)
         {
             var svc = CreateProductService();
+            var catSvc = CreateCategoryService();
             var detail = svc.GetProductById(id);
+            var cat = catSvc.GetCategories();
             var model = new ProductEdit
             {
                 ProductId = detail.ProductId,
                 CategoryId = detail.CategoryId,
+                Categories = cat.Select(e => new SelectListItem
+                {
+                    Text = e.CategoryName,
+                    Value = e.CategoryId.ToString()
+                }),
                 ProductName = detail.ProductName,
                 ProductDescription = detail.ProductDescription,
                 CountBy = detail.CountBy,
@@ -69,6 +76,8 @@ namespace Tiplr.WebMVC.Controllers
                 UnitsPerPack = detail.UnitsPerPack,
                 CasePackPrice = detail.CasePackPrice,
                 Active = detail.Active
+ 
+                
             };
             return View(model);
         }

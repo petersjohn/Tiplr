@@ -33,7 +33,7 @@ namespace Tiplr.Services
 
         public IEnumerable<CategoryListItem> GetCategories()
         {
-            using( var ctx = new ApplicationDbContext())
+            using (var ctx = new ApplicationDbContext())
             {
                 var query = ctx.ProductCategories.Where(e => e.CategoryId > 0).OrderBy(e => e.Active).ThenBy(e => e.CategoryName).
                     Select(e => new CategoryListItem
@@ -71,6 +71,28 @@ namespace Tiplr.Services
                 entity.Active = model.Active;
 
                 return ctx.SaveChanges() == 1;
+            }
+        }
+        //helper
+
+        public IEnumerable<ProductEdit> UpdateProductsWithInactiveCategories(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query = ctx.Products.Where(e => e.CategoryId == id).Select(e => new ProductEdit
+                {
+                    Active = e.Active,
+                    CasePackPrice = e.CasePackPrice,
+                    CategoryId = null,
+                    CountBy = e.CountBy,
+                    OrderBy = e.OrderBy,
+                    Par = e.Par,
+                    ProductDescription = e.ProductDescription,
+                    ProductId = e.ProductId,
+                    ProductName = e.ProductName,
+                    UnitsPerPack = e.UnitsPerPack                    
+                });
+                return query.ToArray();
             }
         }
     }

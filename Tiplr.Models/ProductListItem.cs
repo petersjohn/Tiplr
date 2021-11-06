@@ -18,7 +18,7 @@ namespace Tiplr.Models
         public string ProductDescription { get; set; }
         [Display(Name = "Inventory Category")]
         public int? CategoryId { get; set; }
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductCategory Category { get; set; }
 
         [Display(Name = "Pack Size/Count")]
         public int UnitsPerPack { get; set; }

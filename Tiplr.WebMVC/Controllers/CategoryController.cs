@@ -79,6 +79,14 @@ namespace Tiplr.WebMVC.Controllers
             if (svc.UpdateCategory(model))
             {
                 TempData["Save Result"] = "Category updated!";
+                if (model.Active == false)
+                {
+                    if (UpdtInactiveCategoryProduct(id) > 0)
+                    {
+                        TempData["SaveResult"] = "Products with the inactivated category have been updated.";
+                    }
+
+                }
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "Category could not be updated");
@@ -86,10 +94,34 @@ namespace Tiplr.WebMVC.Controllers
         }
 
         //Helper Methods
+
+        private int UpdtInactiveCategoryProduct(int id)
+        {
+            var catSvc = CreateCategoryService();
+            var prodSvc = CreateProductService();
+            var productList = catSvc.UpdateProductsWithInactiveCategories(id);
+            int cnt = 0;
+            if(productList != null)
+            {
+                foreach (var item in productList)
+                {
+                    if (prodSvc.UpdateProduct(item))
+                        cnt += 1;
+                }
+            }
+            return cnt;
+        }
         private CategoryService CreateCategoryService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new CategoryService(userId);
+            return service;
+        }
+
+        private ProductService CreateProductService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ProductService(userId);
             return service;
         }
     }
