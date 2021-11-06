@@ -14,8 +14,10 @@ namespace Tiplr.Models
         
         [Display(Name = "Count")]
         public decimal OnHandCount { get; set; }
+        public int ProductId { get; set; }
+        public virtual Product Product { get; set; }
         public DateTimeOffset LastModifiedDateTime { get; set; }
-        public string Id { get; set; } //user id in ApplicationUser
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public string LastModBy { get; set; } //user id in ApplicationUser
+        public virtual ApplicationUser LastModifiedBy { get; set; }
     }
 }

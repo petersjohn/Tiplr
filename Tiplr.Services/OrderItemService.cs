@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.Cosmos;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,10 +22,12 @@ namespace Tiplr.Services
             var ctx = new ApplicationDbContext();
             var orderSvc = new OrderService(_userId);
             var itemEntity = ctx.InventoryItems.Single(ie => ie.InventoryItemId == invItemId);
-            var returnModel = new OrderItemCreate();
-            returnModel.InventoryItemId = invItemId;
-            returnModel.OrderId = orderSvc.getCurrentOrderId();
-            returnModel.ProductId = itemEntity.ProductId;
+            var returnModel = new OrderItemCreate
+            {
+                InventoryItemId = invItemId,
+                OrderId = orderSvc.getCurrentOrderId(),
+                ProductId = itemEntity.ProductId
+            };
 
             return returnModel;
         }
@@ -115,7 +116,7 @@ namespace Tiplr.Services
 
             using (var ctx = new ApplicationDbContext())
             {
-                var entity = ctx.OrderItems.Single(e => e.OrderItemId == model.OrderItemItemId);
+                var entity = ctx.OrderItems.Single(e => e.OrderItemId == model.OrderItemId);
                 var origCost = entity.OrderItemTotalPrice;
                 entity.OrderAmt = model.OrderAmt;
                 entity.AmtReceived = model.AmtReceived;

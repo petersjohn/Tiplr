@@ -85,7 +85,7 @@
     <Compile Include="InventoryCountItem.cs" />
     <Compile Include="InventoryCreate.cs" />
     <Compile Include="InventoryDetail.cs" />
-    <Compile Include="InventoryFinalize.cs" />
+    <Compile Include="InventoryUpdate.cs" />
     <Compile Include="InventoryItemCreate.cs" />
     <Compile Include="InventoryList.cs" />
     <Compile Include="InvItemDetail.cs" />

@@ -74,7 +74,7 @@ namespace Tiplr.Services
             }
         }
 
-        public bool UpdateInventory(InventoryFinalize model)
+        public bool UpdateInventory(InventoryUpdate model)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -82,7 +82,8 @@ namespace Tiplr.Services
                 entity.Finalized = model.Finalized;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
                 entity.LastModUser = model.LastModifiedBy;
-                entity.TotalOnHandValue = model.TotalOnHandValue;
+                entity.TotalOnHandValue = GetOnHandValue(model.InventoryId);
+
 
                 return ctx.SaveChanges() == 1;
             }
@@ -110,6 +111,27 @@ namespace Tiplr.Services
             {
                 var count = ctx.Inventories.Where(e => e.Finalized == false).Count();
                 return count;
+            }
+        }
+        public decimal GetOnHandValue(int id)
+        {
+            decimal totCnt = 0.00m;  //initialize
+            using (var ctx = new ApplicationDbContext())
+            {
+                var query = ctx.InventoryItems.Where(e => e.InventoryId == id)
+                    .Select(e => new InvItemDetail
+                    {
+                        InventoryId = e.InventoryId,
+                        OnHandCount = e.OnHandCount,
+                        ProductId = e.ProductId,
+                        UpdtUser = e.LastModifiedById
+                    });
+                var invItemList = query.ToArray();
+                foreach (var item in invItemList)
+                {
+                    totCnt += item.Product.UnitPrice * item.OnHandCount;
+                }
+                return totCnt;
             }
         }
     }

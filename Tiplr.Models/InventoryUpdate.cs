@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Tiplr.Models
 {
-    public class InventoryFinalize
+    public class InventoryUpdate
     {
         public int InventoryId { get; set; }
         [Display(Name = "Inventory Finalized?")]

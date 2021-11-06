@@ -17,7 +17,19 @@ namespace Tiplr.Services
             _userId = userId;
         }
 
-        public bool InventoryCountCreate(InventoryItemCreate model)
+        public InventoryItemCreate CreateInvItemView(int productId)//this is a one off item if you add a product mid inventory cycle.
+        {
+            var model = new InventoryItemCreate
+            {
+                ProductId = productId,
+                InventoryId = GetCurrentInvId(),
+                OnHandCount = 0
+            };
+            return model;
+
+        }
+        
+        public bool CreateInvItemCount(InventoryItemCreate model)
         {
             var entity = new InventoryItem()
             {
@@ -25,7 +37,7 @@ namespace Tiplr.Services
                 ProductId = model.ProductId,
                 OnHandCount = model.OnHandCount,
                 LastModifiedDtTm = DateTimeOffset.Now,
-                LastModifiedById = model.Id
+                LastModifiedById = _userId.ToString()
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -36,17 +48,19 @@ namespace Tiplr.Services
 
         public bool CreateCountList(IEnumerable<ProductListItem> Products)
         {
-            var model = new InventoryItemCreate();
-            model.InventoryId = GetCurrentInvId();
+            var model = new InventoryItemCreate
+            {
+                InventoryId = GetCurrentInvId()
+            };
             //return the result model, or maybe create an item result model so we can return a view for items that failed to create, yay NOTES!!
             int saveCnt = 0;
             foreach (var item in Products)
             {
                 model.OnHandCount = 0;
                 model.ProductId = item.ProductId;
-                model.Id = _userId.ToString();
+                model.LastModUser = _userId.ToString();
                 model.LastModifiedDtTm = DateTimeOffset.Now;
-                if (InventoryCountCreate(model)) saveCnt += 1;
+                if (CreateInvItemCount(model)) saveCnt += 1;
             }
             if (saveCnt > 0)
                 return true;
@@ -85,7 +99,7 @@ namespace Tiplr.Services
             }
         }
 
-        public InvItemDetail GetInvItemDetail(int invItemId)
+        public InvItemDetail GetInventoryItemById(int invItemId)
         {
             using (var ctx = new ApplicationDbContext())
             {
@@ -129,7 +143,7 @@ namespace Tiplr.Services
                 var entity = ctx.InventoryItems.Single(e => e.InventoryItemId == model.InventoryItemId);
                 entity.OnHandCount = model.OnHandCount;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
-                entity.LastModifiedById = model.Id;
+                entity.LastModifiedById = model.LastModBy;
 
                 return ctx.SaveChanges() == 1;
             }

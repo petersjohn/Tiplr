@@ -43,7 +43,7 @@ namespace Tiplr.WebMVC.Controllers
                 var productsToInventory = productSvc.GetActiveProducts();
                 if (invItemSvc.CreateCountList(productsToInventory))
                 {
-                    TempData["SaveResult"] = "Count sheet is complete, I hope you like it!";
+                    TempData["SaveResult"] = "Count sheet is complete, get to counting!";
                     return RedirectToAction("Index");
                 }
             }
@@ -61,12 +61,12 @@ namespace Tiplr.WebMVC.Controllers
         }
 
 
-        public ActionResult Finalize(int id)
+        public ActionResult Edit(int id)
         {
             var invSvc = CreateInvService();
             var invDetail = invSvc.GetInventoryById(id);
-            var invValue = GetOnHandValue(id);
-            var model = new InventoryFinalize()
+            var invValue = invSvc.GetOnHandValue(id);
+            var model = new InventoryUpdate()
             {
                 InventoryId = invDetail.InventoryId,
                 TotalOnHandValue = invValue,
@@ -79,7 +79,7 @@ namespace Tiplr.WebMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Finalize(InventoryFinalize model, int id)
+        public ActionResult Edit(InventoryUpdate model, int id)
         {
             if (!ModelState.IsValid) return View(model);
             if (model.InventoryId != id)
@@ -90,10 +90,10 @@ namespace Tiplr.WebMVC.Controllers
             var invSvc = CreateInvService();
             if (invSvc.UpdateInventory(model))
             {
-                TempData["SaveResult"] = "Inventory has been finalized.";
+                TempData["SaveResult"] = "Inventory has been saved.";
                 return RedirectToAction("Index");
             }
-            ModelState.AddModelError("", "Inventory Could not be finalized");
+            ModelState.AddModelError("", "Inventory Could not be saved");
             return View(model);
         }
 
@@ -147,20 +147,6 @@ namespace Tiplr.WebMVC.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new ProductService(userId);
             return service;
-        }
-
-        private decimal GetOnHandValue(int id)
-        {
-            var itemSvc = CreateInvItemService();
-            var invItems = itemSvc.GetOnHandInventory(id);
-            decimal retval = 0m;
-            foreach (var invItem in invItems)
-            {
-                //each Count, multiplied by the product unit price sub totalled to the retval
-                decimal onHandVal = invItem.OnHandCount * invItem.Product.UnitPrice;
-                retval = retval + onHandVal;
-            }
-            return retval;
         }
 
         private int RemoveInvForDeletedInventory(int id)
