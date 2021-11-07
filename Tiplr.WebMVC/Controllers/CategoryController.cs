@@ -93,6 +93,43 @@ namespace Tiplr.WebMVC.Controllers
             return View(model);
         }
 
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateCategoryService();
+            var detail = svc.GetCategoryById(id);
+            var updtModel = new CategoryEdit
+            {
+                CategoryId = detail.CategoryId,
+                CategoryName = detail.CategoryName,
+                Active = false
+            };
+            return View(updtModel);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult InactivateCategory(int id)
+        {
+            var svc = CreateCategoryService();
+            var getModel = svc.GetCategoryById(id);
+            var updtModel = new CategoryEdit
+            {
+                CategoryId = getModel.CategoryId,
+                CategoryName = getModel.CategoryName,
+                Active = false
+            };
+            if(svc.UpdateCategory(updtModel))
+            {
+                TempData["SaveResult"] = "Product Category has been inactivated, this will not affect existing inventories";
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Your category could not be inactivated.");
+            return View(updtModel);
+        }
+        
+
+
         //Helper Methods
 
         private int UpdtInactiveCategoryProduct(int id)

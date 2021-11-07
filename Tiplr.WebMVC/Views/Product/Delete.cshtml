@@ -1,28 +1,29 @@
-﻿@model Tiplr.Models.ProductCreate
+﻿@model Tiplr.Models.ProductEdit
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Archive Product";
 }
 
-<h2>Create</h2>
+<h2>Delete</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
 <div class="form-horizontal">
-    <h4>ProductCreate</h4>
+    <h4>Clicking save will remove this item from the active product list. </h4>
+    <h5>You can reactivate this product at anytime from the archive tab.</h5>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.ProductId)
-    @*        <div class="form-group">
-            @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+@*    <div class="form-group">
+        @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+        </div>
+    </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -43,7 +44,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(model => model.ProductCategories, (SelectList)ViewBag.MyList, "Please select", new { @class = "form-control" })
+            @Html.EditorFor(model => model.CategoryId, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -65,18 +66,18 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.UnitsPerPack, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.UnitsPerPack, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.UnitsPerPack, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
         @Html.LabelFor(model => model.CasePackPrice, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.CasePackPrice, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.CasePackPrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UnitsPerPack, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UnitsPerPack, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.UnitsPerPack, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -89,8 +90,18 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.Active)
+                @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
     </div>
 </div>

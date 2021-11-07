@@ -22,7 +22,7 @@ namespace Tiplr.Services
         {
             var ctx = new ApplicationDbContext();
             var viewModel = new ProductCreate();
-            viewModel.ProductCategories = ctx.ProductCategories.OrderBy(m=> m.CategoryName).Select(category => new SelectListItem
+            viewModel.ProductCategories = ctx.ProductCategories.Where(m=> m.Active == true).OrderBy(m=> m.CategoryName).Select(category => new SelectListItem
             {
                 Text = category.CategoryName,
                 Value = category.CategoryId.ToString()
@@ -61,7 +61,7 @@ namespace Tiplr.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var query = ctx.Products
-                    .Where(e => e.Active == true).OrderBy(e => e.CategoryId).ThenBy(e => e.ProductName)
+                    .Where(e => e.Active == true).OrderBy(e => e.ProductCategory.CategoryName).ThenBy(e => e.ProductName)
                     .Select(e =>
                                new ProductListItem
                                {
@@ -100,6 +100,7 @@ namespace Tiplr.Services
                     Par = entity.Par,
                     LastModifiedDtTm = entity.LastModifiedDtTm,
                     UserId = entity.LastUpdateById,
+                    User = entity.LastModBy,
                     Active = entity.Active                   
                 };
             }
@@ -151,12 +152,10 @@ namespace Tiplr.Services
                     entity.InactiveDtTm = null;
                 }
                 entity.Active = model.Active;
-                entity.LastModifiedDtTm = DateTimeOffset.Now;
-
+               
                 return ctx.SaveChanges() == 1;
 
             }
         }
-
     }
 }

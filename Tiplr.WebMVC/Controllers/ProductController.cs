@@ -75,8 +75,8 @@ namespace Tiplr.WebMVC.Controllers
                 Par = detail.Par,
                 UnitsPerPack = detail.UnitsPerPack,
                 CasePackPrice = detail.CasePackPrice,
-                Active = detail.Active
- 
+                Active = detail.Active,
+                Category = detail.Category 
                 
             };
             return View(model);
@@ -84,8 +84,15 @@ namespace Tiplr.WebMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductEdit model, int id)
+        public ActionResult Edit(int id, ProductEdit model)
         {
+            var catSvc = CreateCategoryService();
+            var cat = catSvc.GetCategories();
+            model.Categories = cat.Select(e => new SelectListItem
+            {
+                Text = e.CategoryName,
+                Value = e.CategoryId.ToString()
+            });
             if (!ModelState.IsValid) return View(model);
             if(model.ProductId != id)
             {
@@ -102,6 +109,43 @@ namespace Tiplr.WebMVC.Controllers
             return View(model);
         }
 
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateProductService();
+            var catSvc = CreateCategoryService();
+            var detail = svc.GetProductById(id);
+            var cat = catSvc.GetCategories();
+            var model = new ProductEdit
+            {
+                ProductId = detail.ProductId,
+                CategoryId = detail.CategoryId,
+                ProductName = detail.ProductName,
+                ProductDescription = detail.ProductDescription,
+                CountBy = detail.CountBy,
+                OrderBy = detail.OrderBy,
+                Par = detail.Par,
+                UnitsPerPack = detail.UnitsPerPack,
+                CasePackPrice = detail.CasePackPrice,
+                Active = false,
+                Category = detail.Category
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, ProductEdit model)
+        {
+            var svc = CreateProductService();
+            if(id == model.ProductId && ModelState.IsValid)
+            {
+                svc.UpdateProduct(model);
+                return RedirectToAction("Index");
+            }
+            ModelState.AddModelError("", "Product could not be updated");
+            return View(model);
+        }
 
         //Helper Methods
         private ProductService CreateProductService()

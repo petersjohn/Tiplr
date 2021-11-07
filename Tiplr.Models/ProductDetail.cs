@@ -24,7 +24,7 @@ namespace Tiplr.Models
         public string CountBy { get; set; }
         [Display(Name = "Ordered By Units")]
         public string OrderBy { get; set; }
-        [Display(Name = "Units per ordered pack")]
+        [Display(Name = "Case Price")]
 
         public decimal CasePackPrice { get; set; }
         public int UnitsPerPack { get; set; }
@@ -35,5 +35,6 @@ namespace Tiplr.Models
         public DateTimeOffset LastModifiedDtTm { get; set; }
         [Display(Name = "Last Updated By")]
         public string UserId { get; set; }
+        public virtual ApplicationUser User {get; set;} 
     }
 }
