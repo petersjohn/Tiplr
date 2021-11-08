@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Tiplr.Models.InventoryCountItem>
+
+@{
+    ViewBag.Title = "Count Sheet";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            <b>Product</b>
+            @*@Html.DisplayNameFor(model => model.ProductId)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OnHandCount)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Product.ProductName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OnHandCount)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
+            @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.InventoryItemId })
+        </td>
+    </tr>
+}
+
+</table>

@@ -70,12 +70,13 @@ namespace Tiplr.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var query = ctx.InventoryItems.Where(e => e.InventoryId == inventoryId).OrderBy(e => e.Product.ProductCategory).ThenBy(e => e.Product.ProductName)
+                var query = ctx.InventoryItems.Where(e => e.InventoryId == inventoryId).OrderBy(e => e.Product.ProductCategory.CategoryName).ThenBy(e => e.Product.ProductName)
                     .Select(e => new InventoryCountItem
                     {
                         InventoryItemId = e.InventoryItemId,
                         InventoryId = e.InventoryId,
                         ProductId = e.ProductId,
+                        Product = e.Product,
                         OnHandCount = e.OnHandCount
                     });
                 return query.ToArray();
@@ -92,6 +93,7 @@ namespace Tiplr.Services
                         InventoryItemId = q.InventoryItemId,
                         InventoryId = q.InventoryId,
                         ProductId = q.ProductId,
+                        Product = q.Product,
                         OnHandCount = q.OnHandCount
                     });
                 return query.ToArray();
@@ -109,8 +111,11 @@ namespace Tiplr.Services
                     InventoryItemId = entity.InventoryItemId,
                     InventoryId = entity.InventoryId,
                     ProductId = entity.ProductId,
+                    Product = entity.Product,
                     OnHandCount = entity.OnHandCount,
-                    UpdtUser = entity.LastModifiedById //user string guid
+                    UpdtUser = entity.LastModifiedById, //user string guid
+                     
+                    
                 };
             }
         }

@@ -1,0 +1,74 @@
+﻿@model Tiplr.Models.InventoryDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>InventoryDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.InventoryId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InventoryId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InventoryDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InventoryDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Finalized)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Finalized)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalOnHandValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalOnHandValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByUser)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByUser)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDtTm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDtTm)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.InventoryId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

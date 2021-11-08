@@ -17,7 +17,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Tiplr -- Make it Count", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -26,6 +26,8 @@
                     {
                         <li>@Html.ActionLink("Product Categories", "Index", "Category")</li>
                         <li>@Html.ActionLink("Products", "Index", "Product")</li>
+                        <li> @Html.ActionLink("Inventories", "Index", "Inventory")</li>
+                        <li> @Html.ActionLink("Count Sheet", "Index", "InventoryItem")</li>
                     }
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>

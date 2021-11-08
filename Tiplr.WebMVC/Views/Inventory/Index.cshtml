@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Tiplr.Models.InventoryList>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.InventoryId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InventoryDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalOnHandValue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Finalized)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.InventoryId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InventoryDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalOnHandValue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Finalized)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.InventoryId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.InventoryId }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.InventoryId })
+        </td>
+    </tr>
+}
+
+</table>

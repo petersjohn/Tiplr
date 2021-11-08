@@ -18,6 +18,7 @@ namespace Tiplr.Models
         [Display(Name = "Count")]
         public decimal OnHandCount { get; set; }
         public string UpdtUser { get; set; }
+        public virtual ApplicationUser LastUpdtBy { get; set; }
 
     }
 }
