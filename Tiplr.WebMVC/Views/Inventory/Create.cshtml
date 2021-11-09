@@ -1,7 +1,7 @@
 ﻿@model Tiplr.Models.InventoryCreate
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Start a new inventory";
 }
 
 <h2>Create</h2>
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>InventoryCreate</h4>
+       
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">

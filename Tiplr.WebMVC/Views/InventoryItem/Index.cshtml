@@ -7,7 +7,17 @@
 <h2>Count Sheet</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @if (Model.Count() > 0)
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+    @if (Model.Count() == 0)
+    {
+        <b>There is no active inventory to count. Start one here:</b>
+        @Html.ActionLink("Start Inventory", "Create", "Inventory", null, new { @class = "text-danger" })
+    }
+
+
 </p>
 <table class="table">
     <tr>

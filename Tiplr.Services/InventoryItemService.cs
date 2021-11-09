@@ -28,10 +28,12 @@ namespace Tiplr.Services
                 Value = product.ProductId.ToString()
             });
             model.InventoryId = GetCurrentInvId();
+            if (model.InventoryId == 0)
+                return null;
             return model;
         }
-        
-        
+
+
         public bool CreateInvItemCount(InventoryItemCreate model)
         {
             var entity = new InventoryItem()
@@ -43,8 +45,8 @@ namespace Tiplr.Services
                 LastModifiedDtTm = DateTimeOffset.Now,
                 LastModifiedById = _userId.ToString(),
                 LastModBy = model.LastModifiedUser
-                
-                
+
+
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -123,8 +125,8 @@ namespace Tiplr.Services
                     UpdtUser = entity.LastModifiedById, //user string guid
                     Inventory = entity.Inventory
 
-                     
-                    
+
+
                 };
             }
         }
@@ -133,9 +135,9 @@ namespace Tiplr.Services
         {
             var invItems = GetOnHandInventory(inventoryId);
             List<InvItemDetail> orderInv = new List<InvItemDetail>();
-            foreach(var item in invItems)
+            foreach (var item in invItems)
             {
-                if(item.Product.Par < item.OnHandCount)
+                if (item.Product.Par < item.OnHandCount)
                 {
                     orderInv.Add(new InvItemDetail
                     {
@@ -173,7 +175,7 @@ namespace Tiplr.Services
             }
         }
         //helper
-        
+
         public int GetItemInvRowCount(int id)
         {
             using (var ctx = new ApplicationDbContext())
@@ -187,10 +189,13 @@ namespace Tiplr.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity = ctx.Inventories.Single(e => e.Finalized == false);
+                var entity = ctx.Inventories.Where(e => e.Finalized == false).FirstOrDefault();
+                if (entity == null)
+                    return 0;
                 return entity.InventoryId;
             }
         }
-       
+
     }
 }
+
