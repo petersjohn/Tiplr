@@ -38,6 +38,7 @@ namespace Tiplr.Services
         public InventoryCreate GetInvCreateView()
         {
             var viewModel = new InventoryCreate();
+            viewModel.InventoryDate = DateTimeOffset.Now;
             return viewModel;
         }
 
@@ -52,7 +53,10 @@ namespace Tiplr.Services
                     InventoryDate = entity.InventoryDate,
                     Finalized = entity.Finalized,
                     LastModUser = entity.LastModUser,
-                    CreatedByUser = entity.CreatedByUser
+                    LastModifiedUser = entity.LastModBy,
+                    CreatedByUser = entity.CreatedByUser,
+                    CreateUser = entity.CreatedBy,
+                    TotalOnHandValue = entity.TotalOnHandValue
 
                 };
             }
@@ -95,12 +99,17 @@ namespace Tiplr.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Inventories.Single(e => e.InventoryId == id);
-                if (!entity.Finalized == true)
+                if (entity.Finalized == true)
                 {
                     return false;
                 }
                 else
-                    return ctx.SaveChanges() == 1;
+                {
+                    ctx.Inventories.Remove(entity);
+                }
+                return ctx.SaveChanges() == 1;
+
+
             }
         }
 
@@ -124,6 +133,7 @@ namespace Tiplr.Services
                         InventoryId = e.InventoryId,
                         OnHandCount = e.OnHandCount,
                         ProductId = e.ProductId,
+                        Product = e.Product,
                         UpdtUser = e.LastModifiedById
                     });
                 var invItemList = query.ToArray();

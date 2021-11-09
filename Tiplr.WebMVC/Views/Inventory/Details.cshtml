@@ -9,15 +9,8 @@
 <div>
     <h4>InventoryDetail</h4>
     <hr />
+    @Html.HiddenFor(model => model.InventoryId)
     <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.InventoryId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InventoryId)
-        </dd>
-
         <dt>
             @Html.DisplayNameFor(model => model.InventoryDate)
         </dt>
@@ -35,7 +28,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TotalOnHandValue)
+            <b>Total Cost of Inventory</b>
         </dt>
 
         <dd>
@@ -43,27 +36,26 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastModUser)
+            <b>Last updated by</b>
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastModUser)
+            @Html.DisplayFor(model => model.LastModifiedUser.UserName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.CreatedByUser)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreatedByUser)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.LastModifiedDtTm)
+            <b>Last Updated On </b>
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.LastModifiedDtTm)
+        </dd>
+        <dt>
+            <b>Created By</b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreateUser.UserName)
         </dd>
 
     </dl>

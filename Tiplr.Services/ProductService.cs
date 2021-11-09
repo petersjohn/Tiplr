@@ -37,6 +37,8 @@ namespace Tiplr.Services
                 ProductName = model.ProductName,
                 ProductDescription = model.ProductDescription,
                 ProductCategory = model.ProductCategory,
+                CategoryId = model.CategoryId,
+                ProductId = model.ProductId,
                 CountBy = model.CountBy,
                 OrderBy = model.OrderBy,
                 CasePackPrice = model.CasePackPrice,

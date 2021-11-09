@@ -11,7 +11,8 @@ namespace Tiplr.Models
     public class InvItemEdit
     {
         public int InventoryItemId { get; set; }
-        
+        public int InventoryId { get; set; }
+
         [Display(Name = "Count")]
         public decimal OnHandCount { get; set; }
         public int ProductId { get; set; }

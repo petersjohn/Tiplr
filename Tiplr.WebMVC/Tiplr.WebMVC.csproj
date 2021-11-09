@@ -255,12 +255,12 @@
     <Content Include="Views\Inventory\Create.cshtml" />
     <Content Include="Views\Inventory\Details.cshtml" />
     <Content Include="Views\Inventory\Edit.cshtml" />
-    <Content Include="Views\Inventory\DeleteInventory.cshtml" />
+    <Content Include="Views\Inventory\Delete.cshtml" />
     <Content Include="Views\InventoryItem\Create.cshtml" />
     <Content Include="Views\InventoryItem\Index.cshtml" />
     <Content Include="Views\InventoryItem\Details.cshtml" />
-    <Content Include="Views\InventoryItem\Delete.cshtml" />
     <Content Include="Views\InventoryItem\Edit.cshtml" />
+    <Content Include="Views\InventoryItem\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

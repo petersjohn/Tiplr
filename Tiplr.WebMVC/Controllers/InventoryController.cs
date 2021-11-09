@@ -47,7 +47,7 @@ namespace Tiplr.WebMVC.Controllers
                     return RedirectToAction("Index");
                 }
             }
-            ModelState.AddModelError("", "Hoo boy, something crashed and burned, log out and try again.");
+            ModelState.AddModelError("", "Could not create inventory. There is likely an active, unfinalized inventory.");
             return View(model);
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using Tiplr.Data;
 using Tiplr.Models;
 
@@ -17,27 +18,33 @@ namespace Tiplr.Services
             _userId = userId;
         }
 
-        public InventoryItemCreate CreateInvItemView(int productId)//this is a one off item if you add a product mid inventory cycle.
+        public InventoryItemCreate CreateInvItemView()//this is a one off item if you add a product mid inventory cycle.
         {
-            var model = new InventoryItemCreate
+            var ctx = new ApplicationDbContext();
+            var model = new InventoryItemCreate();
+            model.ProductList = ctx.Products.Where(e => e.Active == true).OrderBy(e => e.ProductName).Select(product => new SelectListItem
             {
-                ProductId = productId,
-                InventoryId = GetCurrentInvId(),
-                OnHandCount = 0
-            };
+                Text = product.ProductName,
+                Value = product.ProductId.ToString()
+            });
+            model.InventoryId = GetCurrentInvId();
             return model;
-
         }
+        
         
         public bool CreateInvItemCount(InventoryItemCreate model)
         {
             var entity = new InventoryItem()
             {
-                InventoryId = model.InventoryId,
+                InventoryId = GetCurrentInvId(),
                 ProductId = model.ProductId,
+                Product = model.Product,
                 OnHandCount = model.OnHandCount,
                 LastModifiedDtTm = DateTimeOffset.Now,
-                LastModifiedById = _userId.ToString()
+                LastModifiedById = _userId.ToString(),
+                LastModBy = model.LastModifiedUser
+                
+                
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -114,6 +121,8 @@ namespace Tiplr.Services
                     Product = entity.Product,
                     OnHandCount = entity.OnHandCount,
                     UpdtUser = entity.LastModifiedById, //user string guid
+                    Inventory = entity.Inventory
+
                      
                     
                 };
@@ -169,7 +178,7 @@ namespace Tiplr.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var count = ctx.InventoryItems.Count(e => e.InventoryId == id);
+                var count = ctx.InventoryItems.Where(e => e.InventoryId == id).Count();
                 return count;
             }
         }

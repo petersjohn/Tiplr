@@ -14,10 +14,10 @@ namespace Tiplr.WebMVC.Controllers
 
 
         //GET Create
-        public ActionResult Create(int productId) //this would only get called once you have created a product
+        public ActionResult Create() //this would only get called once you have created a product
         {
             var svc = CreateInvItemService();
-            var model = svc.CreateInvItemView(productId);
+            var model = svc.CreateInvItemView();
             return View(model);
         }
 
@@ -27,7 +27,7 @@ namespace Tiplr.WebMVC.Controllers
         {
             if (!ModelState.IsValid) return View(model);
             var invItemSvc = CreateInvItemService();
-            decimal invAdj = model.OnHandCount * model.Product.UnitPrice;
+            decimal invAdj = model.OnHandCount * GetUnitPrice(model.ProductId);
             if (invItemSvc.CreateInvItemCount(model))
             {
                 TempData["SaveResult"] = "InventoryItem added to Count Sheet..";
@@ -70,8 +70,14 @@ namespace Tiplr.WebMVC.Controllers
             {
                 LastModBy = model.UpdtUser,
                 InventoryItemId = model.InventoryItemId,
+                InventoryId = model.InventoryId,
                 OnHandCount = model.OnHandCount,
-                ProductId = model.ProductId
+                ProductId = model.ProductId,
+                Product = model.Product,
+                LastModifiedDateTime = DateTimeOffset.Now,
+                LastModifiedBy = model.LastUpdtBy
+
+
             };
             return View(viewModel);
 
@@ -89,14 +95,14 @@ namespace Tiplr.WebMVC.Controllers
                 return View(model);
             }
             decimal origCostOfItem = GetItemCost(id);
-            decimal updtdCostOfItem = model.OnHandCount * model.Product.UnitPrice;
+            decimal updtdCostOfItem = model.OnHandCount * GetUnitPrice(model.ProductId);
             decimal adjToInvCost = updtdCostOfItem - origCostOfItem;
             var invItemSvc = CreateInvItemService();
 
             if (invItemSvc.UpdateInvItem(model))
             {
                 TempData["SaveResult"] = "Count list item update successful.";
-                if (UpdateInventory(id, adjToInvCost))
+                if (UpdateInventory(model.InventoryId, adjToInvCost))
                 {
                     TempData["SaveResult"] = "Inventory update successful.";
                 }
@@ -120,13 +126,16 @@ namespace Tiplr.WebMVC.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(InvItemDetail model)
-        {
+        public ActionResult ItemDelete(int id)
+        {   
+            
             var invItemSvc = CreateInvItemService();
+            var model = invItemSvc.GetInventoryItemById(id);
             var adjAmt = GetItemCost(model.InventoryItemId) * -1;
             if (invItemSvc.DeleteInvItem(model.InventoryItemId))
             {
                 TempData["SaveResult"] = "Count item update deleted.";
+
                 if (UpdateInventory(model.InventoryId, adjAmt))
                 {
                     TempData["SaveResult"] = "Inventory updated.";
@@ -141,50 +150,65 @@ namespace Tiplr.WebMVC.Controllers
             return View(model);
         }
 
-            //helper methods
-            //**************************************************************************************
-            private decimal GetItemCost(int id)
+        //helper methods
+        //**************************************************************************************
+
+
+        private decimal GetItemCost(int id)
+        {
+            var svc = CreateInvItemService();
+            var model = svc.GetInventoryItemById(id);
+            decimal costOfItem = model.OnHandCount * model.Product.UnitPrice;
+            return costOfItem;
+        }
+
+        private decimal GetUnitPrice(int productId)
+        {
+            var prdSvc = CreateProductService();
+            var model = prdSvc.GetProductById(productId);
+            return model.UnitPrice;
+        }
+
+        private bool UpdateInventory(int inventoryId, decimal adjAmt)
+        {
+            var invSvc = CreateInvService();
+            var detail = invSvc.GetInventoryById(inventoryId);
+            var updtModel = new InventoryUpdate
             {
-                var svc = CreateInvItemService();
-                var model = svc.GetInventoryItemById(id);
-                decimal costOfItem = model.OnHandCount * model.Product.UnitPrice;
-                return costOfItem;
-            }
+                InventoryId = detail.InventoryId,
+                LastModifiedBy = User.Identity.GetUserId(),
+                Finalized = detail.Finalized,
+                TotalOnHandValue = detail.TotalOnHandValue + adjAmt
 
-            private bool UpdateInventory(int inventoryId, decimal adjAmt)
+            };
+            if (invSvc.UpdateInventory(updtModel))
             {
-                var invSvc = CreateInvService();
-                var detail = invSvc.GetInventoryById(inventoryId);
-                var updtModel = new InventoryUpdate
-                {
-                    InventoryId = detail.InventoryId,
-                    LastModifiedBy = User.Identity.GetUserId(),
-                    Finalized = detail.Finalized,
-                    TotalOnHandValue = detail.TotalOnHandValue + adjAmt
-
-                };
-                if (invSvc.UpdateInventory(updtModel))
-                {
-                    return true;
-                }
-                return false;
-
+                return true;
             }
-
-            private InventoryItemService CreateInvItemService()
-            {
-                var userId = Guid.Parse(User.Identity.GetUserId());
-                var service = new InventoryItemService(userId);
-                return service;
-            }
-
-            private InventoryService CreateInvService()
-            {
-                var userId = Guid.Parse(User.Identity.GetUserId());
-                var service = new InventoryService(userId);
-                return service;
-            }
+            return false;
 
         }
 
+        private InventoryItemService CreateInvItemService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new InventoryItemService(userId);
+            return service;
+        }
+
+        private InventoryService CreateInvService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new InventoryService(userId);
+            return service;
+        }
+
+        private ProductService CreateProductService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ProductService(userId);
+            return service;
+        }
     }
+
+}
