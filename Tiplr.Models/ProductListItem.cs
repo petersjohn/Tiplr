@@ -25,6 +25,7 @@ namespace Tiplr.Models
         [Display(Name = "Unit Price")]
         public decimal UnitPrice { get; set; }
         public int Par { get; set; }
+        public string OrderBy { get; set; }
 
         public bool Active { get; set; }
     }

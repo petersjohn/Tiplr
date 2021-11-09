@@ -69,6 +69,7 @@ namespace Tiplr.Services
                                {
                                    ProductId = e.ProductId,
                                    ProductName = e.ProductName,
+                                   OrderBy = e.OrderBy,
                                    ProductDescription = e.ProductDescription,
                                    CategoryId = e.CategoryId,
                                    UnitsPerPack = e.UnitsPerPack,

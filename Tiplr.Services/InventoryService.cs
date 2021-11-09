@@ -72,7 +72,8 @@ namespace Tiplr.Services
                             {
                                 InventoryId = e.InventoryId,
                                 Finalized = e.Finalized,
-                                TotalOnHandValue = e.TotalOnHandValue
+                                TotalOnHandValue = e.TotalOnHandValue,
+                                InventoryDate = e.InventoryDate
                             });
                 return query.ToArray();
             }

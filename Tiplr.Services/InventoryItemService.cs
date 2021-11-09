@@ -159,7 +159,6 @@ namespace Tiplr.Services
                 var entity = ctx.InventoryItems.Single(e => e.InventoryItemId == model.InventoryItemId);
                 entity.OnHandCount = model.OnHandCount;
                 entity.LastModifiedDtTm = DateTimeOffset.Now;
-                entity.LastModifiedById = model.LastModBy;
 
                 return ctx.SaveChanges() == 1;
             }
