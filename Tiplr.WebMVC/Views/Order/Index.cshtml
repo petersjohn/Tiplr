@@ -27,6 +27,7 @@
     {
         @Html.HiddenFor(modelItem => item.OrderId)
         @Html.HiddenFor(modelItem => item.InventoryId)
+        @Html.HiddenFor(modelItem => item.OrderStatusId)
 <tr>
     <td>
         @Html.DisplayFor(modelItem => item.OrderDate)
@@ -36,9 +37,9 @@
     </td>
 
     <td>
-        @Html.ActionLink("Edit", "Edit", new { item.OrderId }) |
-        @Html.ActionLink("Details", "Details", new { item.OrderId }) |
-        @Html.ActionLink("Delete", "Delete", new { item.OrderId })
+        @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) |
+        @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
+        @Html.ActionLink("Delete", "Delete", new { id =item.OrderId })
     </td>
 </tr>
     }

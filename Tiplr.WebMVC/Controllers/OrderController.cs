@@ -42,8 +42,8 @@ namespace Tiplr.WebMVC.Controllers
             if (svc.CreateOrder(model))
             {
                 TempData["SaveResult"] = "Your Order was created!";
-
-                return RedirectToAction("Index");//reset this to return the user to the order item index.
+                CreateOrderItemsFromOrderCreate(model.InventoryId);
+                return RedirectToAction("Index","OrderItem");//reset this to return the user to the order item index.
             };
             ModelState.AddModelError("", "Order could not be created. Either no inventory has been started or there is an existing order for this inventory period.");
             return View(model);
@@ -151,12 +151,45 @@ namespace Tiplr.WebMVC.Controllers
             };
             return OrderItemDeleteCount;
         }
+
+        private int CreateOrderItemsFromOrderCreate(int invId)
+        {
+            var ordSvc = CreateOrderService();
+            var ordItemSvc = CreateOrderItemService();
+            var prdSvc = CreateProductService();
+            var itemsToOrder = GetInvItemsToOrder(invId);
+            int orderId = ordSvc.getCurrentOrderId();
+            int cnt = 0; 
+            OrderItemCreate createOrderItem = new OrderItemCreate();
+            foreach(var item in itemsToOrder)
+            {
+                createOrderItem.ProductId = item.ProductId;
+                createOrderItem.Product = item.Product;
+                createOrderItem.InventoryItemId = item.InventoryItemId;
+                createOrderItem.OrderId = orderId;
+                createOrderItem.OrderAmt = ordItemSvc.GetOrderItemVolume(item.ProductId, item.OnHandCount);
+                createOrderItem.AmtReceived = 0;
+                if (ordItemSvc.CreateOrderItem(createOrderItem))
+                    cnt += 1;
+            }
+            return cnt;
+
+
+        }
         private OrderService CreateOrderService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new OrderService(userId);
             return service;
         }
+        private List<InvItemDetail> GetInvItemsToOrder(int invId)
+        {
+            var invItemSvc = CreateInvItemService();
+            var subPar = invItemSvc.GetSubParInvItems(invId);
+            return subPar;
+        }
+
+       
 
         private OrderItemService CreateOrderItemService()
         {
@@ -178,6 +211,14 @@ namespace Tiplr.WebMVC.Controllers
             var service = new OrderStatusService(userId);
             return service;
         }
+
+        private ProductService CreateProductService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ProductService(userId);
+            return service;
+        }
+
 
     }
 

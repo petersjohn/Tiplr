@@ -13,7 +13,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderId)
+            <b>Product</b>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.OrderAmt)
@@ -30,15 +30,21 @@
         @Html.HiddenFor(modelItem => item.ProductId)
         @Html.HiddenFor(modelItem => item.OrderId)
         @Html.HiddenFor(modelItem => item.InventoryItemId)
+        @Html.HiddenFor(modelItem => item.OrderDate)
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.OrderAmt)
+                @Html.DisplayFor(modelItem => item.Product.OrderBy)
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AmtReceived)
             </td>
-             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.OrderItemId}) |
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderItemId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.OrderItemId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })
             </td>

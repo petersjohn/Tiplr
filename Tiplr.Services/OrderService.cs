@@ -20,6 +20,11 @@ namespace Tiplr.Services
         public OrderCreate CreateOrderView()
         {
             var model = new OrderCreate();
+            var ctx = new ApplicationDbContext();
+            model.OrderStatusId = ctx.OrderStatuses.Single(e => e.OrderStatusMeaning == "Generated").OrderStatusId;
+            model.OrderCost = 0.00m;
+            model.OrderDate = DateTimeOffset.Now;
+            model.LastUpdateUserId = _userId.ToString();
             return model;
         }
         public bool CreateOrder(OrderCreate model)
@@ -75,7 +80,9 @@ namespace Tiplr.Services
                         OrderId = e.OrderId,
                         InventoryId = e.InventoryId,
                         OrderStatusId = e.OrderStatusId,
-                        OrderDate = e.OrderDate
+                        OrderDate = e.OrderDate,
+                        OrderStatus = e.OrderStatus
+
                     });
                 return query.ToArray();
             }
@@ -132,9 +139,11 @@ namespace Tiplr.Services
                 var query = (from i in ctx.Inventories
                              join o in ctx.Orders on i.InventoryId equals o.InventoryId
                              where i.Finalized == false
-                             select new { o.OrderId }).Single()
-                int orderId = query.OrderId;
-                return orderId;
+                             select new { o.OrderId }).FirstOrDefault();
+                if (query == null)
+                    return 0;
+                return query.OrderId;
+
             }
         }
 

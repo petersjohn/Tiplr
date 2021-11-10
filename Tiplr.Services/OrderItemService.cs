@@ -36,7 +36,7 @@ namespace Tiplr.Services
             var entity = new OrderItem()
             {
                 ProductId = model.ProductId,
-                //InventoryItemId = model.InventoryItemId,
+                InventoryItemId = model.InventoryItemId,
                 OrderId = model.OrderId,
                 OrderAmt = model.OrderAmt,
                 AmtReceived = model.AmtReceived,
@@ -64,7 +64,10 @@ namespace Tiplr.Services
                                  ProductId = e.ProductId,
                                  OrderAmt = e.OrderAmt,
                                  AmtReceived = e.AmtReceived,
-                                 InventoryItemId = e.InventoryItemId
+                                 InventoryItemId = e.InventoryItemId,
+                                 Product = e.Product
+                                 
+                                 
                              });
                 return query.ToArray();
             }
@@ -162,6 +165,18 @@ namespace Tiplr.Services
                 entityCost = entity.OrderCost;
                 entity.OrderCost = (entityCost - origCost) + CostAdjustment;
                 return ctx.SaveChanges() == 1;
+            }
+        }
+
+        public int GetOrderItemVolume(int productId,decimal onHand)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.Products.Single(e => e.ProductId == productId);
+                int parVolume = entity.Par * entity.UnitsPerPack;
+                decimal parDiff = parVolume - onHand;
+                int orderAmt = (int)Math.Ceiling(parDiff / entity.UnitsPerPack);
+                 return orderAmt;
             }
         }
 

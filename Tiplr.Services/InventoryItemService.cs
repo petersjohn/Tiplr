@@ -145,7 +145,9 @@ namespace Tiplr.Services
                         OnHandCount = item.OnHandCount,
                         ProductId = item.ProductId,
                         UpdtUser = _userId.ToString(),
-                        InventoryItemId = item.InventoryItemId
+                        InventoryItemId = item.InventoryItemId,
+                        Product = item.Product
+                        
                     });
                 }
             }
