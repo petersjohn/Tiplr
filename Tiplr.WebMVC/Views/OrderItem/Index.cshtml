@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Tiplr.Models.OrderItemListItem>
+
+@{
+    ViewBag.Title = "Order Items";
+}
+
+<h2>OrderItems</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderAmt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmtReceived)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        @Html.HiddenFor(modelItem => item.OrderItemId)
+        @Html.HiddenFor(modelItem => item.ProductId)
+        @Html.HiddenFor(modelItem => item.OrderId)
+        @Html.HiddenFor(modelItem => item.InventoryItemId)
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderAmt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmtReceived)
+            </td>
+             <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.OrderItemId}) |
+                @Html.ActionLink("Details", "Details", new { id = item.OrderItemId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })
+            </td>
+        </tr>
+    }
+
+</table>

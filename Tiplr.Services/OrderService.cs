@@ -53,7 +53,12 @@ namespace Tiplr.Services
                     OrderId = order.OrderId,
                     InventoryId = order.InventoryId,
                     OrderCost = order.OrderCost,
-                    UserId = order.LastModifiedById
+                    UserId = order.LastModifiedById,
+                    OrderDate = order.OrderDate,
+                    OrderStatusId = order.OrderStatusId,
+                    OrderStatus = order.OrderStatus,
+                    ApplicationUser = order.LastModBy,
+                    Inventory = order.Inventory
                 };
 
             }
@@ -64,7 +69,7 @@ namespace Tiplr.Services
             {
                 var query = ctx.Orders.Where(
                     e => e.OrderId > 0).OrderByDescending(e => e.OrderDate)
-                    .Take(10).Select(
+                    .Select(
                     e => new OrderListItem
                     {
                         OrderId = e.OrderId,
@@ -127,7 +132,7 @@ namespace Tiplr.Services
                 var query = (from i in ctx.Inventories
                              join o in ctx.Orders on i.InventoryId equals o.InventoryId
                              where i.Finalized == false
-                             select new { o.OrderId }).Single();
+                             select new { o.OrderId }).Single()
                 int orderId = query.OrderId;
                 return orderId;
             }

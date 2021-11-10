@@ -261,11 +261,19 @@
     <Content Include="Views\InventoryItem\Details.cshtml" />
     <Content Include="Views\InventoryItem\Edit.cshtml" />
     <Content Include="Views\InventoryItem\Delete.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
+    <Content Include="Views\Order\Create.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
+    <Content Include="Views\Order\Edit.cshtml" />
+    <Content Include="Views\Order\Delete.cshtml" />
+    <Content Include="Views\OrderItem\Index.cshtml" />
+    <Content Include="Views\OrderItem\Create.cshtml" />
+    <Content Include="Views\OrderItem\Detail.cshtml" />
+    <Content Include="Views\OrderItem\Edit.cshtml" />
+    <Content Include="Views\OrderItem\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\OrderItem\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

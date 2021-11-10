@@ -1,0 +1,52 @@
+﻿@model Tiplr.Models.OrderDetail
+
+@{
+    ViewBag.Title = "Order Detail";
+}
+
+<h2>Order Detail</h2>
+
+<div>
+    <h4>OrderDetail</h4>
+    <hr />
+    @Html.HiddenFor(model => model.OrderId)
+    @Html.HiddenFor(model => model.InventoryId)
+    @Html.HiddenFor(model => model.OrderStatusId)
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </dt>
+
+        <dd>
+            <b>Order Status</b>
+        </dd>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus.OrderStatusMeaning)
+        </dd>
+
+        <dt>
+            <b>Order Cost</b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderCost)
+        </dd>
+
+        <dt>
+            <b>Last Updated By </b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApplicationUser.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.OrderId}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

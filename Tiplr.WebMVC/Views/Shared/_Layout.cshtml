@@ -28,8 +28,10 @@
                         <li>@Html.ActionLink("Products", "Index", "Product")</li>
                         <li> @Html.ActionLink("Inventories", "Index", "Inventory")</li>
                         <li> @Html.ActionLink("Count Sheet", "Index", "InventoryItem")</li>
+                        <li> @Html.ActionLink("Orders", "Index", "Order")</li>
+                        <li> @Html.ActionLink("Order Items", "Index", "OrderItem")</li>
                     }
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

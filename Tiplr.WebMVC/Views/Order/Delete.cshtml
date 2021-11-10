@@ -1,0 +1,52 @@
+﻿@model Tiplr.Models.OrderDetail
+
+@{
+    ViewBag.Title = "Delete Order";
+}
+
+<h2>Delete Ortfrt</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+@Html.HiddenFor(model => model.OrderId)
+@Html.HiddenFor(model => model.InventoryId)
+@Html.HiddenFor(model => model.UserId)
+<div>
+    <h4>OrderDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <b>Order Date</b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderDate)
+        </dd>
+
+        <dt>
+            <b>Order Status</b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderStatus.OrderStatusMeaning)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderCost)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+<div class="form-actions no-color">
+    <button type="button" class="btn btn-default" onclick="window.history.back();">Cancel</button>
+    <input type="submit" value="Delete" class="btn btn-default" /> |
+    @Html.ActionLink("Back to List", "Index")
+</div>
+    }
+</div>

@@ -56,7 +56,8 @@ namespace Tiplr.Services
                     LastModifiedUser = entity.LastModBy,
                     CreatedByUser = entity.CreatedByUser,
                     CreateUser = entity.CreatedBy,
-                    TotalOnHandValue = entity.TotalOnHandValue
+                    TotalOnHandValue = entity.TotalOnHandValue,
+                    LastModifiedDtTm = entity.LastModifiedDtTm
 
                 };
             }
