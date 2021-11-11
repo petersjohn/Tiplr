@@ -60,14 +60,14 @@ namespace Tiplr.Services
                     .ThenBy(e => e.Product.ProductName).Select(e =>
                              new OrderItemListItem
                              {
-                                 OrderId = e.OrderId,
+                                 OrderItemId = e.OrderItemId,
+                                 OrderId = (int)e.OrderId,
                                  ProductId = e.ProductId,
                                  OrderAmt = e.OrderAmt,
                                  AmtReceived = e.AmtReceived,
                                  InventoryItemId = e.InventoryItemId,
-                                 Product = e.Product
-                                 
-                                 
+                                 Product = e.Product,
+                                 OrderItemCost = e.OrderItemTotalPrice
                              });
                 return query.ToArray();
             }
@@ -85,7 +85,7 @@ namespace Tiplr.Services
                             select new OrderItemListItem
                             {
                                 OrderItemId = ordItem.OrderItemId,
-                                OrderId = ordItem.OrderId,
+                                OrderId = (int)ordItem.OrderId,
                                 ProductId = ordItem.ProductId,
                                 OrderAmt = ordItem.OrderAmt,
                                 AmtReceived = ordItem.AmtReceived,
@@ -106,10 +106,12 @@ namespace Tiplr.Services
                     OrderItemId = entity.OrderItemId,
                     ProductId = entity.ProductId,
                     InventoryItemId = entity.InventoryItemId,
-                    OrderId = entity.OrderId,
+                    OrderId = (int)entity.OrderId,
                     OrderAmt = entity.OrderAmt,
                     AmtReceived = entity.AmtReceived,
-                    OrderItemTotalPrice = entity.OrderItemTotalPrice
+                    OrderItemTotalPrice = entity.OrderItemTotalPrice,
+                    Order = entity.Order,
+                    Product = entity.Product
                 };
             }
         }
@@ -123,6 +125,8 @@ namespace Tiplr.Services
                 var origCost = entity.OrderItemTotalPrice;
                 entity.OrderAmt = model.OrderAmt;
                 entity.AmtReceived = model.AmtReceived;
+
+               
                 if (model.AmtReceived > 0)
                 {
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.AmtReceived;
@@ -131,11 +135,12 @@ namespace Tiplr.Services
                 {
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.OrderAmt;
                 }
-                if (AdjustOrderCost(entity.OrderItemTotalPrice, origCost, entity.OrderId))
+
+                if(entity.Order.OrderStatus.OrderStatusMeaning != "Generated")
                 {
-                    return ctx.SaveChanges() == 1;
+                    AdjustOrderCost(entity.OrderItemTotalPrice, origCost, (int)entity.OrderId);
                 }
-                return false;
+                return ctx.SaveChanges() > 0;
             }
         }
 
@@ -146,7 +151,7 @@ namespace Tiplr.Services
             {
                 var entity = ctx.OrderItems.Single(e => e.OrderItemId == orderItemId);
                 costAdjustment = entity.OrderItemTotalPrice * -1;
-                if (AdjustOrderCost(costAdjustment, 0.00m, entity.OrderId)) //only remove if the cost can be adjusted
+                if (AdjustOrderCost(costAdjustment, 0.00m, (int)entity.OrderId)) //only remove if the cost can be adjusted
                 {
                     ctx.OrderItems.Remove(entity);
                     return ctx.SaveChanges() == 1;
@@ -173,12 +178,13 @@ namespace Tiplr.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Products.Single(e => e.ProductId == productId);
-                int parVolume = entity.Par * entity.UnitsPerPack;
-                decimal parDiff = parVolume - onHand;
+                decimal parDiff = entity.Par - onHand;
                 int orderAmt = (int)Math.Ceiling(parDiff / entity.UnitsPerPack);
                  return orderAmt;
             }
         }
+
+        
 
 
 

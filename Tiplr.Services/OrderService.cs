@@ -60,10 +60,11 @@ namespace Tiplr.Services
                     OrderCost = order.OrderCost,
                     UserId = order.LastModifiedById,
                     OrderDate = order.OrderDate,
-                    OrderStatusId = order.OrderStatusId,
+                    OrderStatusId = (int)order.OrderStatusId,
                     OrderStatus = order.OrderStatus,
                     ApplicationUser = order.LastModBy,
-                    Inventory = order.Inventory
+                    Inventory = order.Inventory,
+                    
                 };
 
             }
@@ -79,7 +80,7 @@ namespace Tiplr.Services
                     {
                         OrderId = e.OrderId,
                         InventoryId = e.InventoryId,
-                        OrderStatusId = e.OrderStatusId,
+                        OrderStatusId = (int)e.OrderStatusId,
                         OrderDate = e.OrderDate,
                         OrderStatus = e.OrderStatus
 
@@ -89,17 +90,18 @@ namespace Tiplr.Services
         }
 
         //Update
-        public bool UpdateOrderStatus(OrderEdit model)
+        public bool UpdateOrder(OrderEdit model)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Orders.Single(e => e.OrderId == model.OrderId);
                 entity.OrderStatusId = model.OrderStatusId;
                 entity.LastModifiedById = model.LastUpdateUserId;
+                entity.OrderCost = model.OrderCost;
                 return ctx.SaveChanges() == 1;
             }
         }
-
+      
         public bool DeleteOrder(int orderId)
         {
             using (var ctx = new ApplicationDbContext())
@@ -146,6 +148,5 @@ namespace Tiplr.Services
 
             }
         }
-
     }
 }

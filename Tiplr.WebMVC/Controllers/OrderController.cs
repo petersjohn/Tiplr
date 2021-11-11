@@ -43,7 +43,7 @@ namespace Tiplr.WebMVC.Controllers
             {
                 TempData["SaveResult"] = "Your Order was created!";
                 CreateOrderItemsFromOrderCreate(model.InventoryId);
-                return RedirectToAction("Index","OrderItem");//reset this to return the user to the order item index.
+                return RedirectToAction("Index", "OrderItem");//reset this to return the user to the order item index.
             };
             ModelState.AddModelError("", "Order could not be created. Either no inventory has been started or there is an existing order for this inventory period.");
             return View(model);
@@ -74,15 +74,26 @@ namespace Tiplr.WebMVC.Controllers
                     Text = s.OrderStatusMeaning,
                     Value = s.OrderStatusId.ToString()
                 }),
-                LastUpdateUserId = User.Identity.GetUserId()
+                LastUpdateUserId = User.Identity.GetUserId(),
+                OrderCost = orderDetail.OrderCost,
+                OrderStatus = orderDetail.OrderStatus
+
+
             };
             return View(model);
         }
-
+        [ActionName("Edit")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, OrderEdit model)
         {
+            var ordStatSvc = CreateStatusSvc();
+            var status = ordStatSvc.GetStatus();
+            model.Statuses = status.Select(e => new SelectListItem
+            {
+                Text = e.OrderStatusMeaning,
+                Value = e.OrderStatusId.ToString()
+            });
             if (!ModelState.IsValid) return View(model);
 
             if (model.OrderId != id)
@@ -90,10 +101,16 @@ namespace Tiplr.WebMVC.Controllers
                 ModelState.AddModelError("", "ID Mismatch");
                 return View(model);
             }
+            var statModel = CheckOrderStatus((int)model.OrderStatusId);
+            if(statModel.OrderStatusMeaning != "Generated")
+            {
+                model.OrderCost = GetOrderCost(model.OrderId);
+            }
             var svc = CreateOrderService();
-            if (svc.UpdateOrderStatus(model))
+            if (svc.UpdateOrder(model))
             {
                 TempData["SaveResult"] = "The order was updated.";
+                //if(model.OrderStatus.OrderStatusMeaning == "Accepted")
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "The supplied order could not be updated.");
@@ -116,12 +133,13 @@ namespace Tiplr.WebMVC.Controllers
 
         public ActionResult Delete(int id)
         {
-            
+
             var ordSvc = CreateOrderService();
-            int itemsDeleted = DeleteRelatedOrderItems(id);
+
 
             if (ordSvc.DeleteOrder(id))
             {
+                int itemsDeleted = DeleteRelatedOrderItems(id);
                 TempData["SaveResult"] = $"Order ID {id} was deleted along with {itemsDeleted}  products related to this order";
                 return RedirectToAction("Index");
             }
@@ -135,14 +153,18 @@ namespace Tiplr.WebMVC.Controllers
 
 
         //helper methods
-
-
+        private OrderStatusDetail CheckOrderStatus(int statusId)
+        {
+            var svc = CreateStatusSvc();
+            var retModel = svc.GetStatusById(statusId);
+            return retModel;
+        }
         private int DeleteRelatedOrderItems(int orderId)
         {
             var ordItemSvc = CreateOrderItemService();
             var orderItems = ordItemSvc.GetOrderListItemsByOrderId(orderId);
             int OrderItemDeleteCount = 0;
-            foreach(var item in orderItems)
+            foreach (var item in orderItems)
             {
                 if (ordItemSvc.DeleteOrderItem(item.OrderItemId))
                 {
@@ -159,9 +181,9 @@ namespace Tiplr.WebMVC.Controllers
             var prdSvc = CreateProductService();
             var itemsToOrder = GetInvItemsToOrder(invId);
             int orderId = ordSvc.getCurrentOrderId();
-            int cnt = 0; 
+            int cnt = 0;
             OrderItemCreate createOrderItem = new OrderItemCreate();
-            foreach(var item in itemsToOrder)
+            foreach (var item in itemsToOrder)
             {
                 createOrderItem.ProductId = item.ProductId;
                 createOrderItem.Product = item.Product;
@@ -173,8 +195,6 @@ namespace Tiplr.WebMVC.Controllers
                     cnt += 1;
             }
             return cnt;
-
-
         }
         private OrderService CreateOrderService()
         {
@@ -189,7 +209,7 @@ namespace Tiplr.WebMVC.Controllers
             return subPar;
         }
 
-       
+
 
         private OrderItemService CreateOrderItemService()
         {
@@ -217,6 +237,20 @@ namespace Tiplr.WebMVC.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new ProductService(userId);
             return service;
+        }
+
+        public decimal GetOrderCost(int orderId)
+        {
+            var orderItemSvc = CreateOrderItemService();
+            var orderSvc = CreateOrderService();
+            var orderItems = orderItemSvc.GetOrderListItemsByOrderId(orderId);
+            var model = new OrderEdit();
+            decimal orderCost = 0;
+            foreach (var item in orderItems)
+            {
+                orderCost += item.OrderItemCost;
+            }
+            return orderCost;
         }
 
 

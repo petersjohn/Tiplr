@@ -93,6 +93,7 @@ namespace Tiplr.WebMVC.Controllers
                 Text = e.CategoryName,
                 Value = e.CategoryId.ToString()
             });
+            
             if (!ModelState.IsValid) return View(model);
             if(model.ProductId != id)
             {

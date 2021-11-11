@@ -1,10 +1,10 @@
 ﻿@model Tiplr.Models.OrderEdit
 
 @{
-    ViewBag.Title = "Update Order Status";
+    ViewBag.Title = "Edit";
 }
 
-<h2>Order Status Update</h2>
+<h2>Edit</h2>
 
 
 @using (Html.BeginForm())
@@ -17,24 +17,31 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.OrderId)
         @Html.HiddenFor(model => model.LastUpdateUserId)
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrderStatusId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.OrderStatusId, Model.Statuses, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderStatusId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
         <div class="form-group">
-            <div class="control-label col-md-2">
-             @Html.LabelFor(model => model.OrderStatusId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.OrderCost, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.OrderCost, new { @readonly="readonly"})
+                @*@Html.EditorFor(model => model.OrderCost, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OrderCost, "", new { @class = "text-danger" })*@
             </div>
-            <div class="col-md-10 ">
-                @Html.DropDownListFor(model => model.OrderStatusId, Model.Statuses,new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.OrderStatusId, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    
-        
-    <input type="submit" value="Update Status" class="btn btn-default"/> |
-    
     @Html.ActionLink("Back to List", "Index")
 </div>
 

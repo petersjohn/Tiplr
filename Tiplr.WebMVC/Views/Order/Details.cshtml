@@ -16,13 +16,13 @@
         <dt>
             @Html.DisplayNameFor(model => model.OrderDate)
         </dt>
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-
         <dd>
-            <b>Order Status</b>
+            @Html.DisplayFor(model => model.OrderDate)
         </dd>
+
+        <dt>
+            <b>Order Status</b>
+        </dt>
 
         <dd>
             @Html.DisplayFor(model => model.OrderStatus.OrderStatusMeaning)

@@ -1,7 +1,6 @@
 ﻿namespace Tiplr.Data.Migrations
 {
     using System;
-    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -15,35 +14,10 @@
 
         protected override void Seed(Tiplr.Data.ApplicationDbContext context)
         {
-            List<OrderStatus> statusList = new List<OrderStatus>();
+            //  This method will be called after migrating to the latest version.
 
-            statusList.Add(new OrderStatus()
-            {
-                OrderStatusMeaning = "Accepted",
-                Active = true
-            });
-
-            statusList.Add(new OrderStatus()
-            {
-                OrderStatusMeaning = "Generated",
-                Active = true
-            });
-
-            statusList.Add(new OrderStatus()
-            {
-                OrderStatusMeaning = "Received",
-                Active = true
-            });
-
-            statusList.Add(new OrderStatus()
-            {
-                OrderStatusMeaning = "Checked In",
-                Active = true
-            });
-
-            statusList.ForEach(status => context.OrderStatuses
-            .AddOrUpdate(s => new { s.OrderStatusMeaning, s.Active }, status));
-            context.SaveChanges();
+            //  You can use the DbSet<T>.AddOrUpdate() helper extension method
+            //  to avoid creating duplicate seed data.
         }
     }
 }

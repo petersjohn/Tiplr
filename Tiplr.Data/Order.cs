@@ -17,14 +17,13 @@ namespace Tiplr.Data
         public int InventoryId { get; set; }
         public virtual Inventory Inventory { get; set; }
         public decimal OrderCost { get; set; }
-
-        [ForeignKey(nameof(OrderStatus))]
-        public int OrderStatusId { get; set; }
+        public int? OrderStatusId { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public DateTimeOffset OrderDate { get; set; }
         public string LastModifiedById { get; set; }
         [ForeignKey("LastModifiedById")]
         public virtual ApplicationUser LastModBy { get; set; }
+        public virtual ICollection<OrderItem> orderItems { get; set; }
 
         
         

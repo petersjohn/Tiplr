@@ -65,7 +65,9 @@ namespace Tiplr.WebMVC.Controllers
                 OrderAmt = detail.OrderAmt,
                 AmtReceived = detail.AmtReceived,
                 OrderItemId = detail.OrderItemId,
-                OrderItemTotalPrice = detail.OrderItemTotalPrice //gonna need help here hide this
+                OrderItemTotalPrice = detail.OrderItemTotalPrice,
+                ProductId = detail.ProductId
+
             };
             return View(model);
         }
@@ -82,7 +84,8 @@ namespace Tiplr.WebMVC.Controllers
             }
             var svc = CreateOrderItemService();
             //update the orderItemTotalPrice
-            model.OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt;
+            //model.OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt;
+            model.OrderItemTotalPrice = GetOrderItemTotal(model.ProductId, model.OrderAmt);
             if (svc.UpdateOrderItem(model))
             {
                 TempData["SaveResult"] = "Order item was successfully updated.";
@@ -92,6 +95,8 @@ namespace Tiplr.WebMVC.Controllers
             return View(model);
 
         }
+
+
 
         public  ActionResult Delete(int id)
         {
@@ -119,6 +124,13 @@ namespace Tiplr.WebMVC.Controllers
 
         //helper methods
 
+        private decimal GetOrderItemTotal(int productId, int orderAmt)
+        {
+            var prdSvc = CreateProductService();
+            var product = prdSvc.GetProductById(productId);
+            decimal orderPrice = product.CasePackPrice * orderAmt;
+            return orderPrice;
+        }
         private OrderItemService CreateOrderItemService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
@@ -131,6 +143,28 @@ namespace Tiplr.WebMVC.Controllers
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new OrderService(userId);
             return service;
+        }
+
+        private ProductService CreateProductService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ProductService(userId);
+            return service;
+        }
+        private OrderStatusService CreateStatusSvc()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new OrderStatusService(userId);
+            return service;
+        }
+        private string GetOrderStatusByOrderItemId(int orderItemId)
+        {
+            var ordItemSvc = CreateOrderItemService();
+            //var statSvc = CreateStatusSvc();
+            var ordItem = ordItemSvc.GetOrderItemById(orderItemId);
+            string status = ordItem.Order.OrderStatus.OrderStatusMeaning;
+            return status;
+            //var status = statSvc.GetStatusById(ordItem.Order.)
         }
     }
 }

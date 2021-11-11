@@ -137,7 +137,7 @@ namespace Tiplr.Services
             List<InvItemDetail> orderInv = new List<InvItemDetail>();
             foreach (var item in invItems)
             {
-                if (item.Product.Par < item.OnHandCount)
+                if (item.Product.Par > item.OnHandCount)
                 {
                     orderInv.Add(new InvItemDetail
                     {

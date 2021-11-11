@@ -19,7 +19,6 @@ namespace Tiplr.Models
         public virtual Order Order { get; set;}
         [Display(Name="Order Amount")]
         public int OrderAmt { get; set; }
-        public DateTimeOffset OrderDate { get; set; }
         public int AmtReceived { get; set; }
         public decimal OrderItemTotalPrice { get; set; }
 

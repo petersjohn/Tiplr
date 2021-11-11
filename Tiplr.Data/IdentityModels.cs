@@ -52,6 +52,14 @@ namespace Tiplr.Data
                 .Configurations
                 .Add(new IdentityUserLoginConfiguration())
                 .Add(new IdentityUserRoleConfiguration());
+
+            modelBuilder
+                .Entity<OrderItem>()
+                .HasOptional(o => o.Order)
+                .WithMany(m => m.orderItems)
+                .HasForeignKey(k => k.OrderId)
+                .WillCascadeOnDelete(true);
+           
         }
 
         public class IdentityUserLoginConfiguration : EntityTypeConfiguration<IdentityUserLogin>
