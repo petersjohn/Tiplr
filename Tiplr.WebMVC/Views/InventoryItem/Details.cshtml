@@ -7,47 +7,59 @@
 <h2>Details</h2>
 
 <div>
+    @Html.HiddenFor(model => model.InventoryItemId)
+    @Html.HiddenFor(model => model.InventoryId)
+    @Html.HiddenFor(model => model.ProductId)
+    @Html.HiddenFor(model => model.UpdtUser)
+    
     <h4>InvItemDetail</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>
+        @*       <dt>
             @Html.DisplayNameFor(model => model.InventoryItemId)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.InventoryItemId)
-        </dd>
+        </dd>*@
 
         <dt>
-            @Html.DisplayNameFor(model => model.InventoryId)
+            <b>Inventory Date</b>
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.InventoryId)
+            @Html.DisplayFor(model => model.Inventory.InventoryDate)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ProductId)
+            @Html.DisplayNameFor(model => model.Product.ProductName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ProductId)
+            @Html.DisplayFor(model => model.Product.ProductName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.OnHandCount)
+            <b>Count</b>
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.OnHandCount)
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.UpdtUser)
+            @Html.DisplayNameFor(model => model.OrderedInd)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.UpdtUser)
+            @Html.DisplayFor(model => model.OrderedInd)
+        </dd>
+
+        <dt>
+            <b>Last Update By</b>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastUpdtBy.UserName)
         </dd>
 
     </dl>

@@ -11,7 +11,7 @@ namespace Tiplr.Models
     {
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
-        public int InventoryItemId { get; set; }
+        public int? InventoryItemId { get; set; }
         public virtual InventoryItem InventoryItems { get; set; }
         public int OrderId { get; set; }
         public virtual Order Order { get; set; }

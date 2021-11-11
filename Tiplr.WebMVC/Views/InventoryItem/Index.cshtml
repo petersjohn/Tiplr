@@ -22,25 +22,39 @@
             @*@Html.DisplayNameFor(model => model.ProductId)*@
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Product.Par)
+
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.OnHandCount)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Product.ProductName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.OnHandCount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
-            @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.InventoryItemId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    { 
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Par)
+                @Html.DisplayFor(modelItem => item.Product.CountBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnHandCount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
+                @Html.ActionLink("Remove", "Delete", new { id = item.InventoryItemId }) |
+                @if (item.OrderedInd == false)
+                {
+                    @Html.ActionLink("Add to Order", "Create", "OrderItem",new { invItemId = item.InventoryItemId },null)
+                }
+
+            </td>
+        </tr>
+    }
 
 </table>

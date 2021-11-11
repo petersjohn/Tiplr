@@ -14,9 +14,12 @@ namespace Tiplr.Models
         public int InventoryId { get; set; }
         public virtual Inventory Inventory { get; set; }
         public int ProductId { get; set; }
+        [Display(Name = "Ordered")]
+        public bool OrderedInd { get; set; }
         public virtual Product Product { get; set; }
         [Display(Name = "Count")]
         public decimal OnHandCount { get; set; }
+        public int ParVolume { get; set; }
     }
 
 

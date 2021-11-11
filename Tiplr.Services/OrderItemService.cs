@@ -36,7 +36,7 @@ namespace Tiplr.Services
             var entity = new OrderItem()
             {
                 ProductId = model.ProductId,
-                InventoryItemId = model.InventoryItemId,
+                InventoryItemId = (int)model.InventoryItemId,
                 OrderId = model.OrderId,
                 OrderAmt = model.OrderAmt,
                 AmtReceived = model.AmtReceived,

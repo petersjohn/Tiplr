@@ -75,9 +75,8 @@ namespace Tiplr.WebMVC.Controllers
                 ProductId = model.ProductId,
                 Product = model.Product,
                 LastModifiedDateTime = DateTimeOffset.Now,
-                LastModifiedBy = model.LastUpdtBy
-
-
+                LastModifiedBy = model.LastUpdtBy,
+                OrderedInd = model.OrderedInd
             };
             return View(viewModel);
 
@@ -153,7 +152,6 @@ namespace Tiplr.WebMVC.Controllers
         //helper methods
         //**************************************************************************************
 
-
         private decimal GetItemCost(int id)
         {
             var svc = CreateInvItemService();
@@ -186,7 +184,6 @@ namespace Tiplr.WebMVC.Controllers
                 return true;
             }
             return false;
-
         }
 
         private InventoryItemService CreateInvItemService()
