@@ -47,8 +47,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
-                @Html.ActionLink("Remove", "Delete", new { id = item.InventoryItemId }) |
-                @if (item.OrderedInd == false)
+                @if (item.OrderedInd == false && item.OrderId > 0)
                 {
                     @Html.ActionLink("Add to Order", "Create", "OrderItem",new { invItemId = item.InventoryItemId },null)
                 }

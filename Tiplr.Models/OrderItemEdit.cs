@@ -13,6 +13,7 @@ namespace Tiplr.Models
         public int OrderItemId { get; set; }
         public int ProductId { get; set; }
         [Display(Name = "Ordered Quantity")]
+        public virtual Product Product { get; set; }
         public int OrderAmt { get; set; }
         [Display(Name = "Quantity Received")]
         public int AmtReceived { get; set; }

@@ -81,7 +81,8 @@ namespace Tiplr.Services
         public IEnumerable<InventoryCountItem> GetOnHandInventory(int inventoryId)
         {
             using (var ctx = new ApplicationDbContext())
-            {
+            { 
+                int orderId = GetCurrentOrder();
                 var query = ctx.InventoryItems.Where(e => e.InventoryId == inventoryId).OrderBy(e => e.Product.ProductCategory.CategoryName).ThenBy(e => e.Product.ProductName)
                     .Select(e => new InventoryCountItem
                     {
@@ -91,6 +92,7 @@ namespace Tiplr.Services
                         Product = e.Product,
                         OnHandCount = e.OnHandCount,
                         ParVolume = e.Product.Par * e.Product.UnitsPerPack,
+                        OrderId = orderId,
                         OrderedInd = e.OrderedInd
                     });
                 return query.ToArray();
@@ -152,8 +154,8 @@ namespace Tiplr.Services
                         UpdtUser = _userId.ToString(),
                         InventoryItemId = item.InventoryItemId,
                         Product = item.Product,
-                        OrderedInd = item.OrderedInd //maybe?
-                        
+                        OrderedInd = item.OrderedInd
+
                     });
                 }
             }
@@ -177,9 +179,9 @@ namespace Tiplr.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var entity = ctx.InventoryItems.Single(e => e.InventoryItemId == invItemId);
-                ctx.InventoryItems.Remove(entity);
-                return ctx.SaveChanges() == 1;
+                var InvItemEntity = ctx.InventoryItems.Single(e => e.InventoryItemId == invItemId);
+                ctx.InventoryItems.Remove(InvItemEntity);
+                return ctx.SaveChanges() > 0;
             }
         }
         //helper
@@ -202,6 +204,13 @@ namespace Tiplr.Services
                     return 0;
                 return entity.InventoryId;
             }
+        }
+
+        private int GetCurrentOrder()
+        {
+            var svc = new OrderService(_userId);
+            int orderId = svc.GetCurrentOrderId();
+            return orderId;
         }
 
     }

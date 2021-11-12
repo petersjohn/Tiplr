@@ -17,7 +17,7 @@ namespace Tiplr.WebMVC.Controllers
         {
             var orderItemSvc = CreateOrderItemService();
             var orderSvc = CreateOrderService();
-            int orderId = orderSvc.getCurrentOrderId();
+            int orderId = orderSvc.GetCurrentOrderId();
             var model = orderItemSvc.GetOrderListItemsByOrderId(orderId);
             return View(model);
         }
@@ -35,12 +35,12 @@ namespace Tiplr.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(OrderItemCreate model)
         {
-            if (!ModelState.IsValid) return View(model);
             var svc = CreateOrderItemService();
+            if (!ModelState.IsValid) return View(model);
             if (svc.CreateOrderItem(model))
             {
-                TempData["SaveResult"] = "Manual product entry added to current order!";
-                return RedirectToAction("Index"); 
+                svc.UpdateOrderedInd(model.InventoryItemId,true);
+                return RedirectToAction("Index","InventoryItem"); 
             };
             ModelState.AddModelError("", "Order item could not be created.");
             return View(model);
@@ -66,7 +66,8 @@ namespace Tiplr.WebMVC.Controllers
                 AmtReceived = detail.AmtReceived,
                 OrderItemId = detail.OrderItemId,
                 OrderItemTotalPrice = detail.OrderItemTotalPrice,
-                ProductId = detail.ProductId
+                ProductId = detail.ProductId,
+                Product = detail.Product
 
             };
             return View(model);
@@ -111,13 +112,13 @@ namespace Tiplr.WebMVC.Controllers
         public ActionResult DeleteOrderItem(int id)
         {
             var svc = CreateOrderItemService();
+            var model = svc.GetOrderItemById(id);
             if (svc.DeleteOrderItem(id))
             {
-                TempData["SaveResult"] = "Order item was deleted.";
+                svc.UpdateOrderedInd(model.InventoryItemId, false);
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "The order item could not be deleted.Either the id was invalid or the order cost could not be adjusted.");
-            var model = svc.GetOrderItemById(id);
             return View(model);
         }
 

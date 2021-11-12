@@ -4,55 +4,46 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edit Count</h2>
 
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>InvItemEdit</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => model.InventoryId)
-    @Html.HiddenFor(model => model.InventoryItemId)
-    @Html.HiddenFor(model => model.InventoryId)
-    @Html.HiddenFor(model => model.LastModBy)
-    @Html.HiddenFor(model => model.ProductId)
-    @*    <div class="form-group">
-            @Html.LabelFor(model => model.InventoryItemId, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-horizontal">
+        <h3>@ViewData.Model.Product.ProductName</h3>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.InventoryId)
+        @Html.HiddenFor(model => model.InventoryItemId)
+        @Html.HiddenFor(model => model.InventoryId)
+        @Html.HiddenFor(model => model.LastModBy)
+        @Html.HiddenFor(model => model.ProductId)
+        @Html.HiddenFor(model => model.OrderedInd)
+        @*    <div class="form-group">
+                @Html.LabelFor(model => model.InventoryItemId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InventoryItemId, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InventoryItemId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+          <div class="form-group">
+            @Html.LabelFor(model => model.OnHandCount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.InventoryItemId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InventoryItemId, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.OnHandCount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OnHandCount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+@*        @Html.LabelFor(model => model.OrderedInd, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.OrderedInd)
+                @Html.ValidationMessageFor(model => model.OrderedInd, "", new { @class = "text-danger" })
             </div>
         </div>*@
-
-    <div class="form-group">
-        <div class="control-label col-md-2">
-            <b>Product </b>
-        </div>
-        <div class="col-md-10">
-            @ViewData.Model.Product.ProductName
-
-        </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.OnHandCount, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.OnHandCount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.OnHandCount, "", new { @class = "text-danger" })
-        </div>
-    </div>
-     @Html.LabelFor(model => model.OrderedInd, htmlAttributes: new { @class = "control-label col-md-2" })
-    <div class="col-md-10">
-        <div class="checkbox">
-            @Html.EditorFor(model => model.OrderedInd)
-            @Html.ValidationMessageFor(model => model.OrderedInd, "", new { @class = "text-danger" })
-        </div>
-    </div>
-</div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">

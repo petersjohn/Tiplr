@@ -16,6 +16,7 @@ namespace Tiplr.Models
         public int ProductId { get; set; }
         [Display(Name = "Ordered")]
         public bool OrderedInd { get; set; }
+        public int? OrderId { get; set; }
         public virtual Product Product { get; set; }
         [Display(Name = "Count")]
         public decimal OnHandCount { get; set; }

@@ -134,7 +134,7 @@ namespace Tiplr.Services
             return true;
         }
 
-        public int getCurrentOrderId()
+        public int GetCurrentOrderId()
         {
             using (var ctx = new ApplicationDbContext())
             {

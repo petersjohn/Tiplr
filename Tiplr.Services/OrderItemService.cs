@@ -25,12 +25,36 @@ namespace Tiplr.Services
             var returnModel = new OrderItemCreate
             {
                 InventoryItemId = invItemId,
-                OrderId = orderSvc.getCurrentOrderId(),
-                ProductId = itemEntity.ProductId
+                OrderId = orderSvc.GetCurrentOrderId(),
+                ProductId = itemEntity.ProductId,
+                ProductName = itemEntity.Product.ProductName,
+                CasePackPrice = itemEntity.Product.CasePackPrice,
+                AmtReceived = 0,
+                OrderAmt = 0
             };
 
             return returnModel;
         }
+/*        public bool CreateOrderItemsFromOrder(OrderItemMassCreate model)
+        {
+            var entity = new OrderItem()
+            {
+                ProductId = model.ProductId,
+                InventoryItemId = (int)model.InventoryItemId,
+                OrderId = model.OrderId,
+                OrderAmt = model.OrderAmt,
+                AmtReceived = model.AmtReceived,
+                OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt,
+                Product = model.Product
+            };
+            using (var ctx = new ApplicationDbContext())
+            {
+
+                ctx.OrderItems.Add(entity);
+                return ctx.SaveChanges() == 1;
+            }
+        }*/
+
         public bool CreateOrderItem(OrderItemCreate model)
         {
             var entity = new OrderItem()
@@ -40,8 +64,7 @@ namespace Tiplr.Services
                 OrderId = model.OrderId,
                 OrderAmt = model.OrderAmt,
                 AmtReceived = model.AmtReceived,
-                OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt
-
+                OrderItemTotalPrice = model.CasePackPrice * model.OrderAmt
             };
             using (var ctx = new ApplicationDbContext())
             {
@@ -50,7 +73,6 @@ namespace Tiplr.Services
                 return ctx.SaveChanges() == 1;
             }
         }
-
         public IEnumerable<OrderItemListItem> GetOrderListItemsByOrderId(int orderId)
         {
             using (var ctx = new ApplicationDbContext())
@@ -126,7 +148,7 @@ namespace Tiplr.Services
                 entity.OrderAmt = model.OrderAmt;
                 entity.AmtReceived = model.AmtReceived;
 
-               
+
                 if (model.AmtReceived > 0)
                 {
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.AmtReceived;
@@ -136,7 +158,7 @@ namespace Tiplr.Services
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.OrderAmt;
                 }
 
-                if(entity.Order.OrderStatus.OrderStatusMeaning != "Generated")
+                if (entity.Order.OrderStatus.OrderStatusMeaning != "Generated")
                 {
                     AdjustOrderCost(entity.OrderItemTotalPrice, origCost, (int)entity.OrderId);
                 }
@@ -173,20 +195,33 @@ namespace Tiplr.Services
             }
         }
 
-        public int GetOrderItemVolume(int productId,decimal onHand)
+        public int GetOrderItemVolume(int productId, decimal onHand)
         {
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Products.Single(e => e.ProductId == productId);
                 decimal parDiff = entity.Par - onHand;
                 int orderAmt = (int)Math.Ceiling(parDiff / entity.UnitsPerPack);
-                 return orderAmt;
+                return orderAmt;
             }
         }
 
-        
+        public bool UpdateOrderedInd(int invItemId, bool ordInd)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.InventoryItems.Single(e => e.InventoryItemId == invItemId);
+                entity.OrderedInd = ordInd;
+                entity.LastModifiedDtTm = DateTimeOffset.Now;
+                entity.LastModifiedById = _userId.ToString();
+
+                return ctx.SaveChanges() > 0;
+            }
+        }
 
 
 
-    }  
+
+
+    }
 }

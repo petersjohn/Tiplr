@@ -59,7 +59,7 @@ namespace Tiplr.Data
                 .WithMany(m => m.orderItems)
                 .HasForeignKey(k => k.OrderId)
                 .WillCascadeOnDelete(true);
-           
+
         }
 
         public class IdentityUserLoginConfiguration : EntityTypeConfiguration<IdentityUserLogin>

@@ -109,7 +109,7 @@ namespace Tiplr.WebMVC.Controllers
                 {
                     ModelState.AddModelError("", "WARNING: Inventory Cost failed to update.");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","InventoryItem");
             }
             ModelState.AddModelError("", "Inventory count item update failed.");
             return View(model);

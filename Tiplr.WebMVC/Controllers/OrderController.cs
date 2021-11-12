@@ -43,6 +43,7 @@ namespace Tiplr.WebMVC.Controllers
             {
                 TempData["SaveResult"] = "Your Order was created!";
                 CreateOrderItemsFromOrderCreate(model.InventoryId);
+
                 return RedirectToAction("Index", "OrderItem");//reset this to return the user to the order item index.
             };
             ModelState.AddModelError("", "Order could not be created. Either no inventory has been started or there is an existing order for this inventory period.");
@@ -180,19 +181,24 @@ namespace Tiplr.WebMVC.Controllers
             var ordItemSvc = CreateOrderItemService();
             var prdSvc = CreateProductService();
             var itemsToOrder = GetInvItemsToOrder(invId);
-            int orderId = ordSvc.getCurrentOrderId();
+            int orderId = ordSvc.GetCurrentOrderId();
             int cnt = 0;
             OrderItemCreate createOrderItem = new OrderItemCreate();
             foreach (var item in itemsToOrder)
             {
                 createOrderItem.ProductId = item.ProductId;
-                createOrderItem.Product = item.Product;
                 createOrderItem.InventoryItemId = item.InventoryItemId;
                 createOrderItem.OrderId = orderId;
                 createOrderItem.OrderAmt = ordItemSvc.GetOrderItemVolume(item.ProductId, item.OnHandCount);
                 createOrderItem.AmtReceived = 0;
+                createOrderItem.CasePackPrice = item.Product.CasePackPrice;
                 if (ordItemSvc.CreateOrderItem(createOrderItem))
+                {
                     cnt += 1;
+                    ordItemSvc.UpdateOrderedInd(createOrderItem.InventoryItemId, true);
+                }
+                    
+                
             }
             return cnt;
         }

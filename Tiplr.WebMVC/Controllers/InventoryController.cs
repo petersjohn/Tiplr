@@ -114,6 +114,7 @@ namespace Tiplr.WebMVC.Controllers
             var invSvc = CreateInvService();
             var itemSvc = CreateInvItemService();
             int itemCnt = itemSvc.GetItemInvRowCount(id);
+
             if (RemoveInvForDeletedInventory(id) == itemCnt)
             {
                 if (invSvc.DeleteInventory(id))

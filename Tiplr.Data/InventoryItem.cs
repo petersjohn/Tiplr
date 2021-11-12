@@ -22,9 +22,8 @@ namespace Tiplr.Data
         public int ProductId { get; set; }
         public virtual Product Product { get; set; }
         public decimal OnHandCount { get; set; }
-        public bool OrderedInd { get; set; }
         public DateTimeOffset LastModifiedDtTm { get; set; }
-
+        public bool OrderedInd { get; set; }
         public string LastModifiedById  { get; set; }
 
         [ForeignKey("LastModifiedById")]
