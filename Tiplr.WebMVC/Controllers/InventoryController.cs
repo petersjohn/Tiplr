@@ -113,21 +113,31 @@ namespace Tiplr.WebMVC.Controllers
         {
             var invSvc = CreateInvService();
             var itemSvc = CreateInvItemService();
+            var ordSvc = CreateOrderService();
             int itemCnt = itemSvc.GetItemInvRowCount(id);
 
-            if (RemoveInvForDeletedInventory(id) == itemCnt)
+            if (ordSvc.ValidateNoOrderExists(id))
             {
-                if (invSvc.DeleteInventory(id))
+                if (RemoveInvForDeletedInventory(id) == itemCnt)
                 {
-                    TempData["SaveResult"] = "Inventory and all associated counts successfully deleted.";
-                    return RedirectToAction("Index");
+                    if (invSvc.DeleteInventory(id))
+                    {
+                        TempData["SaveResult"] = "Inventory and all associated counts successfully deleted.";
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.AddModelError("", "The selected inventory could not be deleted.");
+                    return View();
                 }
-                ModelState.AddModelError("", "The selected inventory could not be deleted.");
-                return View();
+                ModelState.AddModelError("", "Not all the associated inventory items could be deleted. Delete was unsuccessful.");
+                return RedirectToAction("Index");
             }
-             ModelState.AddModelError("", "Not all the associated inventory items could be deleted. Delete was unsuccessful.");
-            return RedirectToAction("Index");
+            //var model = invSvc.GetInventoryById(id);
+            var model = invSvc.GetInventoryById(id);
+            ViewBag.Message = "NO DELETE FOR YOU: There are orders associate to this inventory, please review, then delete the orders before deleting the inventory.";
+            return View(model);
+           
         }
+            
 
         //***********************************Helper Methods*****************************************//
         private InventoryService CreateInvService()
@@ -150,7 +160,12 @@ namespace Tiplr.WebMVC.Controllers
             var service = new ProductService(userId);
             return service;
         }
-
+        private OrderService CreateOrderService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new OrderService(userId);
+            return service;
+        }
         private int RemoveInvForDeletedInventory(int id)
         {
             var itemSvc = CreateInvItemService();
@@ -166,6 +181,7 @@ namespace Tiplr.WebMVC.Controllers
             return deleteCnt;
 
         }
+        //private bool CheckForOrder(int invId)
     }
 }
 

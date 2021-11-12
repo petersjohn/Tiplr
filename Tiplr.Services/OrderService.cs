@@ -113,7 +113,7 @@ namespace Tiplr.Services
         }
 
         //helper method
-        private bool ValidateNoOrderExists(int id)
+        public bool ValidateNoOrderExists(int id)
         {
             using (var ctx = new ApplicationDbContext())
             {

@@ -6,6 +6,15 @@
 
 <h2>Delete Inventory</h2>
 
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+                    window.onload = function () {
+                        alert("@ViewBag.Message");
+                    };
+    </script>
+}
+
 <h4>Are you sure that you want to delete the inventory for date:</h4>
 @Html.DisplayFor(model => model.InventoryDate)
 <div>
@@ -21,65 +30,65 @@
             @Html.DisplayFor(model => model.InventoryId)
         </dd>*@
 
- @*   <dt>
-        @Html.DisplayNameFor(model => model.InventoryDate)
-    </dt>
+    @*   <dt>
+            @Html.DisplayNameFor(model => model.InventoryDate)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.InventoryDate)
-    </dd>*@
+        <dd>
+            @Html.DisplayFor(model => model.InventoryDate)
+        </dd>*@
 
-@*    <dt>
-        @Html.DisplayNameFor(model => model.Finalized)
-    </dt>
+    @*    <dt>
+            @Html.DisplayNameFor(model => model.Finalized)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.Finalized)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Finalized)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.TotalOnHandValue)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalOnHandValue)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.TotalOnHandValue)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.TotalOnHandValue)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.LastModUser)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModUser)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.LastModUser)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.LastModUser)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.CreatedByUser)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedByUser)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.CreatedByUser)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.CreatedByUser)
+        </dd>
 
-    <dt>
-        @Html.DisplayNameFor(model => model.LastModifiedDtTm)
-    </dt>
+        <dt>
+            @Html.DisplayNameFor(model => model.LastModifiedDtTm)
+        </dt>
 
-    <dd>
-        @Html.DisplayFor(model => model.LastModifiedDtTm)
-    </dd>
+        <dd>
+            @Html.DisplayFor(model => model.LastModifiedDtTm)
+        </dd>
 
-    </dl>*@
+        </dl>*@
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
-<div class="form-actions no-color">
-    <button type="button" class="btn btn-default" onclick="window.history.back();">Cancel</button>
-    <input type="submit" value="Delete" class="btn btn-default" /> 
-    @* @Html.ActionLink("Back to List", "Index")*@
+        <div class="form-actions no-color">
+            <button type="button" class="btn btn-default" onclick="window.history.back();">Cancel</button>
+            <input type="submit" value="Delete" class="btn btn-default" />
+            @* @Html.ActionLink("Back to List", "Index")*@
 
-</div>
+        </div>
     }
 </div>
