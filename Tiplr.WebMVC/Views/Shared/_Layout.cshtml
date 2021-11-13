@@ -9,7 +9,18 @@
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <nav class="navbar navbar-dark" style="background-color: cornflowerblue">
+            <div class="container-fluid">
+                <div class="d-flex flex-row bd-highlight mb-3 justify-content-start">
+                    <span class="navbar-text" style="font-size: xx-large;font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;color:white;">
+                        tiplr
+                    </span>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -30,13 +41,13 @@
                         <li> @Html.ActionLink("Count Sheet", "Index", "InventoryItem")</li>
                         <li> @Html.ActionLink("Orders", "Index", "Order")</li>
                         <li> @Html.ActionLink("Order Items", "Index", "OrderItem")</li>
-                    }
+                    }-->
                     @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                </ul>
+                <!--</ul>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="container body-content">
         @RenderBody()
         <hr />

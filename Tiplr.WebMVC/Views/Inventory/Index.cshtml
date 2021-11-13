@@ -44,22 +44,38 @@
                 @Html.DisplayFor(modelItem => item.Finalized)
             </td>
             <td>
+                @*                @if (!item.Finalized == true)
+        {
+            @Html.ActionLink("Finalize", "Edit", new { id = item.InventoryId })
+            @: |
+        }
+        else
+        {
+            @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        }
+
+        @Html.ActionLink("Details", "Details", new { id = item.InventoryId })
+
+        @if (!item.Finalized == true)
+        {
+            @: |
+            @Html.ActionLink("Delete", "Delete", new { id = item.InventoryId })
+        }*@
                 @if (!item.Finalized == true)
                 {
                     @Html.ActionLink("Finalize", "Edit", new { id = item.InventoryId })
                     @: |
+                    @Html.ActionLink("Details", "Details", new { id = item.InventoryId })
+                    @: |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.InventoryId })
                 }
                 else
                 {
-                    @:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                }
-
-                @Html.ActionLink("Details", "Details", new { id = item.InventoryId })
-
-                @if (!item.Finalized == true)
-                {
+                    @:<medium class="text-muted">Finalize</medium>
                     @: |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.InventoryId })
+                    @Html.ActionLink("Details", "Details", new { id = item.InventoryId })
+                    @: |
+                    @:<medium class="text-muted">Delete</medium>
                 }
 
             </td>
