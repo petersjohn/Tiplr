@@ -123,7 +123,7 @@ namespace Tiplr.WebMVC.Controllers
             var svc = CreateOrderService();
             OrderDetail order = svc.GetOrderById((int)id);
             if (order == null)
-                return View(HttpNotFound());
+                return View(HttpNotFound("The requested order does not exist. This is awkward."));
             return View(order);
 
         }
@@ -147,7 +147,7 @@ namespace Tiplr.WebMVC.Controllers
             else //return the user to the order they are trying to delete.
             {
                 var model = ordSvc.GetOrderById(id);
-                ModelState.AddModelError("", $"Order ID {id} could not be deleted.");
+                ViewBag.Message = "Orders with status of PLACED WITH VENDOR or CHECKED IN cannot be deleted...womp-womp.";
                 return View(model);
             }
         }

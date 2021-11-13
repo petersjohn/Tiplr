@@ -1,13 +1,12 @@
 ﻿@model Tiplr.Models.InventoryDetail
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Inventory Details";
 }
 
-<h2>Details</h2>
+<h2>Inventory Details</h2>
 
 <div>
-    <h4>InventoryDetail</h4>
     <hr />
     @Html.HiddenFor(model => model.InventoryId)
     <dl class="dl-horizontal">
@@ -61,6 +60,11 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.InventoryId }) |
+    @if (!Model.Finalized == true)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.InventoryId })  
+        @:  | 
+
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

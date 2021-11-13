@@ -25,9 +25,11 @@
             @Html.DisplayNameFor(model => model.OrderDate)
         </th>
         <th>
+            <b>@Html.DisplayNameFor(model => model.OrderCost)</b>
+        </th>
+        <th>
             <b>Order Status</b>
         </th>
-
         <th></th>
     </tr>
 
@@ -39,6 +41,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderCost)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderStatus.OrderStatusMeaning)

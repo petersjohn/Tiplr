@@ -82,8 +82,8 @@ namespace Tiplr.Services
                         InventoryId = e.InventoryId,
                         OrderStatusId = (int)e.OrderStatusId,
                         OrderDate = e.OrderDate,
-                        OrderStatus = e.OrderStatus
-
+                        OrderStatus = e.OrderStatus,
+                        OrderCost = e.OrderCost
                     });
                 return query.ToArray();
             }
@@ -107,6 +107,10 @@ namespace Tiplr.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.Orders.Single(e => e.OrderId == orderId);
+                if(entity.OrderStatus.OrderStatusMeaning == "Placed with Vendor" || entity.OrderStatus.OrderStatusMeaning == "Checked In")
+                {
+                    return false;
+                }
                 ctx.Orders.Remove(entity);
                 return ctx.SaveChanges() == 1;
             }
