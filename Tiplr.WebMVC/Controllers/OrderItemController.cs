@@ -13,18 +13,27 @@ namespace Tiplr.WebMVC.Controllers
     {
         [Authorize]
         // GET: OrderItem
-        public ActionResult Index(int? id)//the was a null before
+        public ActionResult Index(int id)//the was a null before
         {
             var orderItemSvc = CreateOrderItemService();
             var orderSvc = CreateOrderService();
-            if (id == null)
+           
+            if (id == 0)
             {
-              id = orderSvc.GetCurrentOrderId();
+                id = orderSvc.GetCurrentOrderId();
             }
+            if (id == 0)
+            {
 
-            var model = orderItemSvc.GetOrderListItemsByOrderId((int)id);
+                TempData["ErrorMessage"] = "No Order Found";
+                return RedirectToAction("Index", "Order");
+            }
+            var model = orderItemSvc.GetOrderListItemsByOrderId(id);
             return View(model);
         }
+
+
+
         //Get Create
         public ActionResult Create(int invItemId)//this is only called from invItemList view
         {
@@ -43,8 +52,8 @@ namespace Tiplr.WebMVC.Controllers
             if (!ModelState.IsValid) return View(model);
             if (svc.CreateOrderItem(model))
             {
-                svc.UpdateOrderedInd(model.InventoryItemId,true);
-                return RedirectToAction("Index","InventoryItem"); 
+                svc.UpdateOrderedInd(model.InventoryItemId, true);
+                return RedirectToAction("Index", "InventoryItem");
             };
             ModelState.AddModelError("", "Order item could not be created.");
             return View(model);
@@ -82,7 +91,7 @@ namespace Tiplr.WebMVC.Controllers
         public ActionResult Edit(int id, OrderItemEdit model)
         {
             if (!ModelState.IsValid) return View(model);
-            if(model.OrderItemId != id)
+            if (model.OrderItemId != id)
             {
                 ModelState.AddModelError("", "ID Mismatch");
                 return View(model);
@@ -103,7 +112,7 @@ namespace Tiplr.WebMVC.Controllers
 
 
 
-        public  ActionResult Delete(int id)
+        public ActionResult Delete(int id)
         {
             var svc = CreateOrderItemService();
             var model = svc.GetOrderItemById(id);

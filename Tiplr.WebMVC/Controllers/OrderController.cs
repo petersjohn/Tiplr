@@ -15,8 +15,13 @@ namespace Tiplr.WebMVC.Controllers
         // GET: Order
         public ActionResult Index()
         {
+            var errMsg = TempData["ErrorMessage"] as string;
             var svc = CreateOrderService();
             var model = svc.GetOrders();
+            if (errMsg != null)
+            {
+                ViewBag.Message = "Cannot display order items for current order...because there is no current order.";
+            }
             return View(model);
         }
 

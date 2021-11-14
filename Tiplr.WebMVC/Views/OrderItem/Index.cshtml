@@ -5,7 +5,11 @@
 }
 
 <h2>Order Items:</h2>
-<h5>Order for Date: @Model.First().OrderDate.ToString("d") </h5>
+@*@if (Model.First().OrderId > 0)
+{
+    @:<h5>Order for Date: @Model.First().OrderDate.ToString("d") </h5>
+}*@
+
 <table class="table">
     <tr>
         <th>
@@ -26,7 +30,7 @@
         @Html.HiddenFor(modelItem => item.ProductId)
         @Html.HiddenFor(modelItem => item.OrderId)
         @Html.HiddenFor(modelItem => item.InventoryItemId)
-        
+
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.ProductName)

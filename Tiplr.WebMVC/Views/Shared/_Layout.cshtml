@@ -32,7 +32,7 @@
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Inventory</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="@Url.Action("Index","Inventory")">Inventories</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Index","InventoryItem",new { id = 0 })">Count Sheet</a></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Index","InventoryItem",new { id = 0 })">Current Count Sheet</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="@Url.Action("Create","Inventory")">Start a New Inventory</a></li>
 
@@ -42,7 +42,7 @@
                             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="@Url.Action("Index","Order")">See All Orders</a></li>
-                                @*<li><a class="dropdown-item" href="@Url.Action("Index","OrderItem")">Products on Current Order</a></li>*@
+                                <li><a class="dropdown-item" href="@Url.Action("Index","OrderItem",new { id = 0 })">Current Order Items</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" href="@Url.Action("Create","Order")">Start a New Order</a></li>
 
