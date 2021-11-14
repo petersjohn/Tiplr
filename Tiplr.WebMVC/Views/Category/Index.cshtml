@@ -9,7 +9,7 @@
 <p>
     @Html.ActionLink("Add a category", "Create")
 </p>
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.CategoryName)
@@ -30,9 +30,9 @@
                 @Html.DisplayFor(modelItem => item.Active)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId }) 
+                @Html.ActionLink("Edit", "Edit", new { id = item.CategoryId })
                 |
-                @Html.ActionLink("Details", "Details", new { id = item.CategoryId }) 
+                @Html.ActionLink("Details", "Details", new { id = item.CategoryId })
                 |
                 @if (item.Active == true)
                 {
@@ -41,6 +41,6 @@
 
             </td>
         </tr>
-     }
- 
+    }
+
 </table>

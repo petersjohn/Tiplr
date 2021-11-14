@@ -12,7 +12,7 @@ namespace Tiplr.Models
     {
         [Required]
         public int InventoryId { get; set; }
-        public virtual Inventory Inventory { get; set; }
+        //public virtual Inventory Inventory { get; set; }
         public decimal OrderCost { get; set; }
         public int OrderStatusId { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }

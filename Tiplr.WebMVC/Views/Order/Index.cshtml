@@ -19,7 +19,7 @@
     @Html.ActionLink("Start a new order", "Create")
 </p>
 
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.OrderDate)
@@ -65,7 +65,7 @@
                 @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.OrderId }) |
-                @Html.ActionLink("View Order Items","Index", "OrderItem", new { id = item.OrderId },null)
+                @Html.ActionLink("View Order Items", "Index", "OrderItem", new { id = item.OrderId }, null)
             </td>
         </tr>
     }

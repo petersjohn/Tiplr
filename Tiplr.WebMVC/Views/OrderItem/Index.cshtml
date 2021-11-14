@@ -10,7 +10,7 @@
     @:<h5>Order for Date: @Model.First().OrderDate.ToString("d") </h5>
 }*@
 
-<table class="table">
+<table class="table table-bordered table-striped">
     <tr>
         <th>
             <b>Product</b>
@@ -46,7 +46,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.OrderItemId }) |
                 @Html.ActionLink("Details", "Detail", new { id = item.OrderItemId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })|
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })
             </td>
         </tr>
     }
