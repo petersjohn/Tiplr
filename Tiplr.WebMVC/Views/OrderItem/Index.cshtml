@@ -4,8 +4,8 @@
     ViewBag.Title = "Order Items";
 }
 
-<h2>Order Items</h2>
-
+<h2>Order Items:</h2>
+<h5>Order for Date: @Model.First().OrderDate.ToString("d") </h5>
 <table class="table">
     <tr>
         <th>
@@ -26,7 +26,7 @@
         @Html.HiddenFor(modelItem => item.ProductId)
         @Html.HiddenFor(modelItem => item.OrderId)
         @Html.HiddenFor(modelItem => item.InventoryItemId)
-        @Html.HiddenFor(modelItem => item.OrderDate)
+        
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Product.ProductName)
@@ -42,7 +42,7 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.OrderItemId }) |
                 @Html.ActionLink("Details", "Detail", new { id = item.OrderItemId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderItemId })|
             </td>
         </tr>
     }

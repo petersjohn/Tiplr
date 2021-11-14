@@ -83,7 +83,9 @@ namespace Tiplr.Services
                         OrderStatusId = (int)e.OrderStatusId,
                         OrderDate = e.OrderDate,
                         OrderStatus = e.OrderStatus,
-                        OrderCost = e.OrderCost
+                        OrderCost = e.OrderCost,
+                        InventoryDate = e.Inventory.InventoryDate,
+                        Finalized = e.Inventory.Finalized
                     });
                 return query.ToArray();
             }

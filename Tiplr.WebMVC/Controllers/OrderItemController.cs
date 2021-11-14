@@ -13,12 +13,16 @@ namespace Tiplr.WebMVC.Controllers
     {
         [Authorize]
         // GET: OrderItem
-        public ActionResult Index()
+        public ActionResult Index(int? id)//the was a null before
         {
             var orderItemSvc = CreateOrderItemService();
             var orderSvc = CreateOrderService();
-            int orderId = orderSvc.GetCurrentOrderId();
-            var model = orderItemSvc.GetOrderListItemsByOrderId(orderId);
+            if (id == null)
+            {
+              id = orderSvc.GetCurrentOrderId();
+            }
+
+            var model = orderItemSvc.GetOrderListItemsByOrderId((int)id);
             return View(model);
         }
         //Get Create

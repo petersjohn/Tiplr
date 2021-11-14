@@ -25,10 +25,16 @@
             @Html.DisplayNameFor(model => model.OrderDate)
         </th>
         <th>
-            <b>@Html.DisplayNameFor(model => model.OrderCost)</b>
+            @Html.DisplayNameFor(model => model.InventoryDate)
         </th>
         <th>
-            <b>Order Status</b>
+            @Html.DisplayNameFor(model => model.Finalized)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderCost)
+        </th>
+        <th>
+            Order Status
         </th>
         <th></th>
     </tr>
@@ -43,6 +49,12 @@
                 @Html.DisplayFor(modelItem => item.OrderDate)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.InventoryDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Finalized)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.OrderCost)
             </td>
             <td>
@@ -52,7 +64,8 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id = item.OrderId }) |
                 @Html.ActionLink("Details", "Details", new { id = item.OrderId }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.OrderId })
+                @Html.ActionLink("Delete", "Delete", new { id = item.OrderId }) |
+                @Html.ActionLink("View Order Items","Index", "OrderItem", new { id = item.OrderId },null)
             </td>
         </tr>
     }

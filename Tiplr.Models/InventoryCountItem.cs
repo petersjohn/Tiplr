@@ -12,7 +12,9 @@ namespace Tiplr.Models
     {
         public int InventoryItemId { get; set; }
         public int InventoryId { get; set; }
-        public virtual Inventory Inventory { get; set; }
+        //public virtual Inventory Inventory { get; set; }
+        [Display(Name = "Inventory Date")]
+        public DateTimeOffset InventoryDate { get; set; }
         public int ProductId { get; set; }
         [Display(Name = "Ordered")]
         public bool OrderedInd { get; set; }

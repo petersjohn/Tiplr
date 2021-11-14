@@ -47,11 +47,14 @@ namespace Tiplr.WebMVC.Controllers
         }
 
         //GET All InvItems
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             var svc = CreateInvItemService();
-            int invId = svc.GetCurrentInvId();
-            var viewModel = svc.GetOnHandInventory(invId);
+            if(id == 0)
+            {
+                id = svc.GetCurrentInvId();
+            }
+            var viewModel = svc.GetOnHandInventory(id);
             return View(viewModel);
         }
 

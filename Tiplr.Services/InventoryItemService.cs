@@ -93,7 +93,9 @@ namespace Tiplr.Services
                         OnHandCount = e.OnHandCount,
                         ParVolume = e.Product.Par * e.Product.UnitsPerPack,
                         OrderId = orderId,
-                        OrderedInd = e.OrderedInd
+                        OrderedInd = e.OrderedInd,
+                        InventoryDate = e.Inventory.InventoryDate
+                        
                     });
                 return query.ToArray();
             }

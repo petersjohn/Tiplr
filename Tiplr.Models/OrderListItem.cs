@@ -14,12 +14,17 @@ namespace Tiplr.Models
         public int OrderId { get; set; }
         [Required]
         public int InventoryId { get; set; }
-        public virtual Inventory Inventory { get; set; }
+       // public virtual Inventory Inventory { get; set; }
+        [Display(Name = "Inventory Date")]
+        public DateTimeOffset InventoryDate { get; set; }
+        [Display(Name = "Status")]
+        public bool Finalized { get; set; }
         [Required]
         public int OrderStatusId { get; set; }
         [Display(Name = "Order Cost")]
         public decimal OrderCost { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
+        [Display(Name = "Order Date")]
         public DateTimeOffset OrderDate { get; set; }
 
     }

@@ -2,10 +2,18 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+@*<div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>*@
+<div class="p-5 mb-4 bg-dark rounded-3">
+    <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Make it count.</h1>
+        <p class="col-md-8 fs-4">Tiplr is a simple, cost effective solution for small business owners to maintain accurate inventories. Create streamlined and consistent orders that will save time and money. </p>
+        <p><a href="@Url.Action("Index","Category")" class="btn btn-primary btn-lg">Get Started</a></p>
+    @*<button class="btn btn-primary btn-lg" type="button">Get Started</button>*@
+    </div>
 </div>
 
 <div class="row">

@@ -89,7 +89,8 @@ namespace Tiplr.Services
                                  AmtReceived = e.AmtReceived,
                                  InventoryItemId = e.InventoryItemId,
                                  Product = e.Product,
-                                 OrderItemCost = e.OrderItemTotalPrice
+                                 OrderItemCost = e.OrderItemTotalPrice,
+                                 OrderDate = e.Order.OrderDate
                              });
                 return query.ToArray();
             }
