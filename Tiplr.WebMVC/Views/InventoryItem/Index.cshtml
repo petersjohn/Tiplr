@@ -4,71 +4,78 @@
     ViewBag.Title = "Count Sheet";
 }
 
-    @if (ViewBag.Message != null)
-    {
-        <script type="text/javascript">
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
                     window.onload = function () {
                         alert("@ViewBag.Message");
                     };
-        </script>
+    </script>
+
+}
+
+<h2>Count Sheet</h2>
+
+
+<p>
+    @if (Model.Count() == 0)
+    {
+        <b>There is no active inventory to count. Start one here:</b>
+        @Html.ActionLink("Start Inventory", "Create", "Inventory", null, new { @class = "text-danger" })
+    }
+    else
+    {
+
+     <h5>Inventory Date: @Model.First().InventoryDate.ToString("d") </h5>
 
     }
 
-    <h2>Count Sheet</h2>
-    <h5>Inventory Date: @Model.First().InventoryDate.ToString("d") </h5>
-    <p>
-        @if (Model.Count() == 0)
-        {
-            <b>There is no active inventory to count. Start one here:</b>
-            @Html.ActionLink("Start Inventory", "Create", "Inventory", null, new { @class = "text-danger" })
-        }
 
+</p>
+<table class="table table-bordered table-striped table-hover">
+    <tr>
+        <th>
+            <b>Product</b>
+            @*@Html.DisplayNameFor(model => model.ProductId)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product.Par)
 
-    </p>
-    <table class="table table-bordered table-striped table-hover">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OnHandCount)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
         <tr>
-            <th>
-                <b>Product</b>
-                @*@Html.DisplayNameFor(model => model.ProductId)*@
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product.Par)
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.Par)
+                @Html.DisplayFor(modelItem => item.Product.CountBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OnHandCount)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
+                @if (item.OrderedInd == false && item.OrderId > 0)
+                {
+                    @Html.ActionLink("Add to Order", "Create", "OrderItem", new { invItemId = item.InventoryItemId }, null)
+                }
+                else
+                {
+                    @:<medium class="text-muted">Add to Order</medium>
+                }
 
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OnHandCount)
-            </th>
-            <th></th>
+
+            </td>
         </tr>
+    }
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Product.ProductName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Product.Par)
-                    @Html.DisplayFor(modelItem => item.Product.CountBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OnHandCount)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.InventoryItemId }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.InventoryItemId }) |
-                    @if (item.OrderedInd == false && item.OrderId > 0)
-                    {
-                        @Html.ActionLink("Add to Order", "Create", "OrderItem", new { invItemId = item.InventoryItemId }, null)
-                    }
-                    else
-                    {
-                        @:<medium class="text-muted">Add to Order</medium>
-                    }
-
-
-                </td>
-            </tr>
-        }
-
-    </table>
+</table>

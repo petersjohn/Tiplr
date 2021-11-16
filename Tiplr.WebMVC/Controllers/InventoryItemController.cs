@@ -12,7 +12,7 @@ namespace Tiplr.WebMVC.Controllers
     public class InventoryItemController : Controller
     {
 
-
+        [Authorize]
         //GET Create
         public ActionResult Create() //this would only get called once you have created a product
         {

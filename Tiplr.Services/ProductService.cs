@@ -32,6 +32,7 @@ namespace Tiplr.Services
 
         public bool CreateProduct(ProductCreate model)
         {
+
             var entity = new Product()
             {
                 ProductName = model.ProductName,

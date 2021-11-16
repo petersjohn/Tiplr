@@ -13,7 +13,7 @@ namespace Tiplr.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202111161333227_init"; }
+            get { return "202111161355339_init"; }
         }
         
         string IMigrationMetadata.Source

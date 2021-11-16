@@ -32,8 +32,19 @@ namespace Tiplr.WebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(ProductCreate model)
         {
+            var catSvc = CreateCategoryService();
+            var cat = catSvc.GetCategories();
             if (!ModelState.IsValid) return View(model);
-
+            if(model.CasePackPrice == 0 || model.Par == 0)
+            {   //reset the iEnum
+                model.ProductCategories = cat.Select(e => new SelectListItem
+                {
+                    Text = e.CategoryName,
+                    Value = e.CategoryId.ToString()
+                });
+                ViewBag.Message = "Please enter a non-zero case price and par.";
+                return View(model);
+            }
             var svc = CreateProductService();
             if (svc.CreateProduct(model))
             {
