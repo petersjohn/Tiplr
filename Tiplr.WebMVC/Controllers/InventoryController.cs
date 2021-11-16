@@ -45,7 +45,7 @@ namespace Tiplr.WebMVC.Controllers
                 {
                     TempData["SaveResult"] = "Count sheet is complete, get to counting!";
                     //return RedirectToAction("Index");
-                    return RedirectToAction("Index", "InventoryItem");
+                    return RedirectToAction("Index", "InventoryItem",new { id = 0 });
                 }
             }
             ModelState.AddModelError("", "Could not create inventory. There is likely an active, unfinalized inventory.");

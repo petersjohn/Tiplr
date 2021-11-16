@@ -42,13 +42,12 @@
                 Active = true
             });
 
-            foreach(var item in status)
+            foreach (var item in status)
             {
                 context.OrderStatuses.AddOrUpdate(item);
                 base.Seed(context);
 
             }
-
         }
     }
 }

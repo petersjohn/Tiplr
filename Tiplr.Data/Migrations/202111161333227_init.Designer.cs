@@ -7,13 +7,13 @@ namespace Tiplr.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.4.4")]
-    public sealed partial class addedOrderedIndToInvItem : IMigrationMetadata
+    public sealed partial class init : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(addedOrderedIndToInvItem));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(init));
         
         string IMigrationMetadata.Id
         {
-            get { return "202111112304372_addedOrderedIndToInvItem"; }
+            get { return "202111161333227_init"; }
         }
         
         string IMigrationMetadata.Source

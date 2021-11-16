@@ -81,13 +81,9 @@
     <Compile Include="IdentityModels.cs" />
     <Compile Include="Inventory.cs" />
     <Compile Include="InventoryItem.cs" />
-    <Compile Include="Migrations\202111110133208_init.cs" />
-    <Compile Include="Migrations\202111110133208_init.designer.cs">
-      <DependentUpon>202111110133208_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202111112304372_addedOrderedIndToInvItem.cs" />
-    <Compile Include="Migrations\202111112304372_addedOrderedIndToInvItem.designer.cs">
-      <DependentUpon>202111112304372_addedOrderedIndToInvItem.cs</DependentUpon>
+    <Compile Include="Migrations\202111161333227_init.cs" />
+    <Compile Include="Migrations\202111161333227_init.designer.cs">
+      <DependentUpon>202111161333227_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Order.cs" />
@@ -102,11 +98,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202111110133208_init.resx">
-      <DependentUpon>202111110133208_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202111112304372_addedOrderedIndToInvItem.resx">
-      <DependentUpon>202111112304372_addedOrderedIndToInvItem.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202111161333227_init.resx">
+      <DependentUpon>202111161333227_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
