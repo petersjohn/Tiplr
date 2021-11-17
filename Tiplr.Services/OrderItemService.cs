@@ -90,7 +90,7 @@ namespace Tiplr.Services
                                  InventoryItemId = e.InventoryItemId,
                                  Product = e.Product,
                                  OrderItemCost = e.OrderItemTotalPrice,
-                                 OrderDate = e.Order.OrderDate
+                                 OrderDate = e.Order.OrderDate,
                              });
                 return query.ToArray();
             }
@@ -148,9 +148,11 @@ namespace Tiplr.Services
                 var origCost = entity.OrderItemTotalPrice;
                 entity.OrderAmt = model.OrderAmt;
                 entity.AmtReceived = model.AmtReceived;
+                bool ordStat = entity.Order.OrderStatus.OrderStatusMeaning == "Checked In" ? true : false;
+                model.Product = entity.Product;
 
 
-                if (model.AmtReceived > 0)
+                if (model.AmtReceived > 0 || ordStat == true)
                 {
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.AmtReceived;
                 }
@@ -159,10 +161,15 @@ namespace Tiplr.Services
                     entity.OrderItemTotalPrice = entity.Product.CasePackPrice * model.OrderAmt;
                 }
 
-                if (entity.Order.OrderStatus.OrderStatusMeaning != "Generated")
+                if (entity.Order.OrderStatus.OrderStatusMeaning != "Generated")// || entity.Order.OrderStatus.OrderStatusMeaning != "Checked In")
                 {
                     AdjustOrderCost(entity.OrderItemTotalPrice, origCost, (int)entity.OrderId);
                 }
+/*                if(entity.Order.OrderStatus.OrderStatusMeaning != "Checked In")
+                {
+
+                }
+                    */
                 return ctx.SaveChanges() > 0;
             }
         }

@@ -49,7 +49,7 @@ namespace Tiplr.WebMVC.Controllers
                 TempData["SaveResult"] = "Your Order was created!";
                 CreateOrderItemsFromOrderCreate(model.InventoryId);
 
-                return RedirectToAction("Index", "OrderItem");//reset this to return the user to the order item index.
+                return RedirectToAction("Index", "OrderItem", new { id = 0 });//reset this to return the user to the order item index.
             };
             ModelState.AddModelError("", "Order could not be created. Either no inventory has been started or there is an existing order for this inventory period.");
             return View(model);
@@ -253,9 +253,7 @@ namespace Tiplr.WebMVC.Controllers
         public decimal GetOrderCost(int orderId)
         {
             var orderItemSvc = CreateOrderItemService();
-            var orderSvc = CreateOrderService();
             var orderItems = orderItemSvc.GetOrderListItemsByOrderId(orderId);
-            var model = new OrderEdit();
             decimal orderCost = 0;
             foreach (var item in orderItems)
             {

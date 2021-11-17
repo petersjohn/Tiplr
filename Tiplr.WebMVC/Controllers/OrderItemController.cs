@@ -53,7 +53,7 @@ namespace Tiplr.WebMVC.Controllers
             if (svc.CreateOrderItem(model))
             {
                 svc.UpdateOrderedInd(model.InventoryItemId, true);
-                return RedirectToAction("Index", "InventoryItem");
+                return RedirectToAction("Index", "InventoryItem",new { id = 0 });
             };
             ModelState.AddModelError("", "Order item could not be created.");
             return View(model);
@@ -90,6 +90,7 @@ namespace Tiplr.WebMVC.Controllers
 
         public ActionResult Edit(int id, OrderItemEdit model)
         {
+            
             if (!ModelState.IsValid) return View(model);
             if (model.OrderItemId != id)
             {
@@ -100,12 +101,13 @@ namespace Tiplr.WebMVC.Controllers
             //update the orderItemTotalPrice
             //model.OrderItemTotalPrice = model.Product.CasePackPrice * model.OrderAmt;
             model.OrderItemTotalPrice = GetOrderItemTotal(model.ProductId, model.OrderAmt);
+
             if (svc.UpdateOrderItem(model))
             {
                 TempData["SaveResult"] = "Order item was successfully updated.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = 0 });
             }
-            ModelState.AddModelError("", "FML, what is this??");
+            ModelState.AddModelError("", "There were no changes to save.");
             return View(model);
 
         }
@@ -129,7 +131,7 @@ namespace Tiplr.WebMVC.Controllers
             if (svc.DeleteOrderItem(id))
             {
                 svc.UpdateOrderedInd(model.InventoryItemId, false);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { id = 0 });
             }
             ModelState.AddModelError("", "The order item could not be deleted.Either the id was invalid or the order cost could not be adjusted.");
             return View(model);

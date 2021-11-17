@@ -16,41 +16,44 @@
                     <img class="image-logo" src="~/Content/Img/Tiplr-inverted.svg" alt="">
                     tiplr
                 </a>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul class="nav nav-pills m-lg-auto text-center">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Products </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="@Url.Action("Index","Product")">Products</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Index","Category")">Product Categories</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Create","Product")">Create a New Product</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Create","Category")">Create a New Product Category</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Inventory</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="@Url.Action("Index","Inventory")">Inventories</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Index","InventoryItem",new { id = 0 })">Current Count Sheet</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Create","Inventory")">Start a New Inventory</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                        <ul class="nav nav-pills m-lg-auto text-center">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Products </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Product")">Products</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Category")">Product Categories</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Create", "Product")">Create a New Product</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Create", "Category")">Create a New Product Category</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Inventory</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Inventory")">Inventories</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "InventoryItem", new { id = 0 })">Current Count Sheet</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Create", "Inventory")">Start a New Inventory</a></li>
 
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="@Url.Action("Index","Order")">See All Orders</a></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Index","OrderItem",new { id = 0 })">Current Order Items</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Create","Order")">Start a New Order</a></li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Orders</a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "Order")">See All Orders</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Index", "OrderItem", new { id = 0 })">Current Order Items</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("Create", "Order")">Start a New Order</a></li>
 
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <p class="text-end" style="color:black">@Html.Partial("_LoginPartial")</p>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                <div class="justify-content-end"> <p class="text-end" style="color:black">@Html.Partial("_LoginPartial")</p></div>
             </div>
         </nav>
     </div>

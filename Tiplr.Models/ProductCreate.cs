@@ -32,6 +32,7 @@ namespace Tiplr.Models
         public int UnitsPerPack { get; set; }
         [Required]
         public decimal CasePackPrice { get; set; }
+        [Required]
         public int Par { get; set; }
     }
 }
